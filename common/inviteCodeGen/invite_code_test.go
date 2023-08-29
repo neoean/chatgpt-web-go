@@ -17,7 +17,7 @@ func TestInviteCode(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	id := uint64(1)
+	id := int64(1)
 	code := inviteCode.IdToCode(1)
 	fmt.Printf("id=%v, code=%v\n", id, code)
 
