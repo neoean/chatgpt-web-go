@@ -1,0 +1,12 @@
+port: 8899
+
+db:
+  type: mysql
+  host: 127.0.0.1:3306
+  hostR1: 127.0.0.1:3306
+  user: root
+  password: 12345
+  name: chatgpt_web_new_go
+
+redis:
+  addr: 127.0.0.1:6379
