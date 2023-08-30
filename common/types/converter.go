@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/869413421/chatgpt-web/pkg/logger"
+	"chatgpt-web-new-go/common/logs"
 	"strconv"
 )
 
@@ -16,7 +16,7 @@ func UInt64ToString(num uint64) string {
 func StringToInt(str string) int {
 	num, err := strconv.Atoi(str)
 	if err != nil {
-		logger.Danger(err, "StringToInt Err")
+		logs.Debug("StringToInt Err: %v", err)
 	}
 
 	return num
