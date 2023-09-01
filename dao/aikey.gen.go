@@ -40,6 +40,7 @@ func newAikey(db *gorm.DB, opts ...gen.DOOption) aikey {
 	_aikey.Status = field.NewInt32(tableName, "status")
 	_aikey.CreateTime = field.NewTime(tableName, "create_time")
 	_aikey.UpdateTime = field.NewTime(tableName, "update_time")
+	_aikey.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_aikey.fillFieldMap()
 
@@ -62,6 +63,7 @@ type aikey struct {
 	Status     field.Int32   // 1 正常 0异常
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -90,6 +92,7 @@ func (a *aikey) updateTableName(table string) *aikey {
 	a.Status = field.NewInt32(table, "status")
 	a.CreateTime = field.NewTime(table, "create_time")
 	a.UpdateTime = field.NewTime(table, "update_time")
+	a.IsDelete = field.NewInt32(table, "is_delete")
 
 	a.fillFieldMap()
 
@@ -106,7 +109,7 @@ func (a *aikey) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *aikey) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 12)
+	a.fieldMap = make(map[string]field.Expr, 13)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["key"] = a.Key
 	a.fieldMap["host"] = a.Host
@@ -119,6 +122,7 @@ func (a *aikey) fillFieldMap() {
 	a.fieldMap["status"] = a.Status
 	a.fieldMap["create_time"] = a.CreateTime
 	a.fieldMap["update_time"] = a.UpdateTime
+	a.fieldMap["is_delete"] = a.IsDelete
 }
 
 func (a aikey) clone(db *gorm.DB) aikey {

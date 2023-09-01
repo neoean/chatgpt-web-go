@@ -39,6 +39,7 @@ func newPlugin(db *gorm.DB, opts ...gen.DOOption) plugin {
 	_plugin.Status = field.NewInt32(tableName, "status")
 	_plugin.CreateTime = field.NewTime(tableName, "create_time")
 	_plugin.UpdateTime = field.NewTime(tableName, "update_time")
+	_plugin.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_plugin.fillFieldMap()
 
@@ -60,6 +61,7 @@ type plugin struct {
 	Status      field.Int32  // 4为审核中1为正常0为异常
 	CreateTime  field.Time
 	UpdateTime  field.Time
+	IsDelete    field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -87,6 +89,7 @@ func (p *plugin) updateTableName(table string) *plugin {
 	p.Status = field.NewInt32(table, "status")
 	p.CreateTime = field.NewTime(table, "create_time")
 	p.UpdateTime = field.NewTime(table, "update_time")
+	p.IsDelete = field.NewInt32(table, "is_delete")
 
 	p.fillFieldMap()
 
@@ -103,7 +106,7 @@ func (p *plugin) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *plugin) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 11)
+	p.fieldMap = make(map[string]field.Expr, 12)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["name"] = p.Name
 	p.fieldMap["description"] = p.Description
@@ -115,6 +118,7 @@ func (p *plugin) fillFieldMap() {
 	p.fieldMap["status"] = p.Status
 	p.fieldMap["create_time"] = p.CreateTime
 	p.fieldMap["update_time"] = p.UpdateTime
+	p.fieldMap["is_delete"] = p.IsDelete
 }
 
 func (p plugin) clone(db *gorm.DB) plugin {

@@ -22,6 +22,15 @@ func StringToInt(str string) int {
 	return num
 }
 
+func StringToInt64(str string) int64 {
+	num, err := strconv.ParseInt(str, 10, 64)
+	if err != nil {
+		logs.Debug("StringToInt Err: %v", err)
+	}
+
+	return num
+}
+
 func Booltonumber(b bool) int {
 	result := 0
 	if b {

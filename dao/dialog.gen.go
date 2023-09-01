@@ -36,6 +36,7 @@ func newDialog(db *gorm.DB, opts ...gen.DOOption) dialog {
 	_dialog.Status = field.NewInt32(tableName, "status")
 	_dialog.CreateTime = field.NewTime(tableName, "create_time")
 	_dialog.UpdateTime = field.NewTime(tableName, "update_time")
+	_dialog.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_dialog.fillFieldMap()
 
@@ -54,6 +55,7 @@ type dialog struct {
 	Status     field.Int32
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -78,6 +80,7 @@ func (d *dialog) updateTableName(table string) *dialog {
 	d.Status = field.NewInt32(table, "status")
 	d.CreateTime = field.NewTime(table, "create_time")
 	d.UpdateTime = field.NewTime(table, "update_time")
+	d.IsDelete = field.NewInt32(table, "is_delete")
 
 	d.fillFieldMap()
 
@@ -94,7 +97,7 @@ func (d *dialog) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (d *dialog) fillFieldMap() {
-	d.fieldMap = make(map[string]field.Expr, 8)
+	d.fieldMap = make(map[string]field.Expr, 9)
 	d.fieldMap["id"] = d.ID
 	d.fieldMap["issue"] = d.Issue
 	d.fieldMap["answer"] = d.Answer
@@ -103,6 +106,7 @@ func (d *dialog) fillFieldMap() {
 	d.fieldMap["status"] = d.Status
 	d.fieldMap["create_time"] = d.CreateTime
 	d.fieldMap["update_time"] = d.UpdateTime
+	d.fieldMap["is_delete"] = d.IsDelete
 }
 
 func (d dialog) clone(db *gorm.DB) dialog {

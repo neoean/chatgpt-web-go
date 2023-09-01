@@ -46,7 +46,7 @@ token | 233091959b615823d9d95ab916851b21 | String | 是 | 用户token
 #### 请求Body参数
 ```javascript
 {
-    "carmi": "q1"
+    "carmiHandlers": "q1"
 }
 ```
 参数名 | 示例值 | 参数类型 | 是否必填 | 参数描述

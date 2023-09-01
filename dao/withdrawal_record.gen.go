@@ -42,6 +42,7 @@ func newWithdrawalRecord(db *gorm.DB, opts ...gen.DOOption) withdrawalRecord {
 	_withdrawalRecord.UserAgent = field.NewString(tableName, "user_agent")
 	_withdrawalRecord.CreateTime = field.NewTime(tableName, "create_time")
 	_withdrawalRecord.UpdateTime = field.NewTime(tableName, "update_time")
+	_withdrawalRecord.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_withdrawalRecord.fillFieldMap()
 
@@ -66,6 +67,7 @@ type withdrawalRecord struct {
 	UserAgent  field.String // ua
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -96,6 +98,7 @@ func (w *withdrawalRecord) updateTableName(table string) *withdrawalRecord {
 	w.UserAgent = field.NewString(table, "user_agent")
 	w.CreateTime = field.NewTime(table, "create_time")
 	w.UpdateTime = field.NewTime(table, "update_time")
+	w.IsDelete = field.NewInt32(table, "is_delete")
 
 	w.fillFieldMap()
 
@@ -112,7 +115,7 @@ func (w *withdrawalRecord) GetFieldByName(fieldName string) (field.OrderExpr, bo
 }
 
 func (w *withdrawalRecord) fillFieldMap() {
-	w.fieldMap = make(map[string]field.Expr, 14)
+	w.fieldMap = make(map[string]field.Expr, 15)
 	w.fieldMap["id"] = w.ID
 	w.fieldMap["user_id"] = w.UserID
 	w.fieldMap["amount"] = w.Amount
@@ -127,6 +130,7 @@ func (w *withdrawalRecord) fillFieldMap() {
 	w.fieldMap["user_agent"] = w.UserAgent
 	w.fieldMap["create_time"] = w.CreateTime
 	w.fieldMap["update_time"] = w.UpdateTime
+	w.fieldMap["is_delete"] = w.IsDelete
 }
 
 func (w withdrawalRecord) clone(db *gorm.DB) withdrawalRecord {

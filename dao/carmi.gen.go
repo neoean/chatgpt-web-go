@@ -32,13 +32,14 @@ func newCarmi(db *gorm.DB, opts ...gen.DOOption) carmi {
 	_carmi.IP = field.NewString(tableName, "ip")
 	_carmi.UserID = field.NewInt64(tableName, "user_id")
 	_carmi.Key = field.NewString(tableName, "key")
-	_carmi.Value = field.NewString(tableName, "value")
+	_carmi.Value = field.NewInt32(tableName, "value")
 	_carmi.Status = field.NewInt32(tableName, "status")
 	_carmi.Type = field.NewString(tableName, "type")
 	_carmi.EndTime = field.NewString(tableName, "end_time")
 	_carmi.Level = field.NewInt32(tableName, "level")
 	_carmi.CreateTime = field.NewTime(tableName, "create_time")
 	_carmi.UpdateTime = field.NewTime(tableName, "update_time")
+	_carmi.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_carmi.fillFieldMap()
 
@@ -53,13 +54,14 @@ type carmi struct {
 	IP         field.String // 使用时候的ip
 	UserID     field.Int64  // 使用者
 	Key        field.String // 卡密
-	Value      field.String // 积分
+	Value      field.Int32  // 积分/天数
 	Status     field.Int32  // 0有效 1使用 2过期
-	Type       field.String // 类型
+	Type       field.String // 类型 integral/vip_days/svip_days
 	EndTime    field.String // 截止时间
 	Level      field.Int32  // 卡密充值等级
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -80,13 +82,14 @@ func (c *carmi) updateTableName(table string) *carmi {
 	c.IP = field.NewString(table, "ip")
 	c.UserID = field.NewInt64(table, "user_id")
 	c.Key = field.NewString(table, "key")
-	c.Value = field.NewString(table, "value")
+	c.Value = field.NewInt32(table, "value")
 	c.Status = field.NewInt32(table, "status")
 	c.Type = field.NewString(table, "type")
 	c.EndTime = field.NewString(table, "end_time")
 	c.Level = field.NewInt32(table, "level")
 	c.CreateTime = field.NewTime(table, "create_time")
 	c.UpdateTime = field.NewTime(table, "update_time")
+	c.IsDelete = field.NewInt32(table, "is_delete")
 
 	c.fillFieldMap()
 
@@ -103,7 +106,7 @@ func (c *carmi) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *carmi) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 11)
+	c.fieldMap = make(map[string]field.Expr, 12)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["ip"] = c.IP
 	c.fieldMap["user_id"] = c.UserID
@@ -115,6 +118,7 @@ func (c *carmi) fillFieldMap() {
 	c.fieldMap["level"] = c.Level
 	c.fieldMap["create_time"] = c.CreateTime
 	c.fieldMap["update_time"] = c.UpdateTime
+	c.fieldMap["is_delete"] = c.IsDelete
 }
 
 func (c carmi) clone(db *gorm.DB) carmi {

@@ -23,6 +23,7 @@ type Plugin struct {
 	Status      int32     `gorm:"column:status;not null;comment:4为审核中1为正常0为异常" json:"status"`  // 4为审核中1为正常0为异常
 	CreateTime  time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime  time.Time `gorm:"column:update_time;not null;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete    int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName Plugin's table name

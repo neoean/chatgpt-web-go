@@ -35,6 +35,7 @@ func newNotification(db *gorm.DB, opts ...gen.DOOption) notification {
 	_notification.Status = field.NewInt32(tableName, "status")
 	_notification.CreateTime = field.NewTime(tableName, "create_time")
 	_notification.UpdateTime = field.NewTime(tableName, "update_time")
+	_notification.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_notification.fillFieldMap()
 
@@ -52,6 +53,7 @@ type notification struct {
 	Status     field.Int32 // 状态
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -75,6 +77,7 @@ func (n *notification) updateTableName(table string) *notification {
 	n.Status = field.NewInt32(table, "status")
 	n.CreateTime = field.NewTime(table, "create_time")
 	n.UpdateTime = field.NewTime(table, "update_time")
+	n.IsDelete = field.NewInt32(table, "is_delete")
 
 	n.fillFieldMap()
 
@@ -91,7 +94,7 @@ func (n *notification) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (n *notification) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 7)
+	n.fieldMap = make(map[string]field.Expr, 8)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["title"] = n.Title
 	n.fieldMap["content"] = n.Content
@@ -99,6 +102,7 @@ func (n *notification) fillFieldMap() {
 	n.fieldMap["status"] = n.Status
 	n.fieldMap["create_time"] = n.CreateTime
 	n.fieldMap["update_time"] = n.UpdateTime
+	n.fieldMap["is_delete"] = n.IsDelete
 }
 
 func (n notification) clone(db *gorm.DB) notification {

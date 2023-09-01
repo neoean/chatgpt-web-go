@@ -34,6 +34,7 @@ func newConfig(db *gorm.DB, opts ...gen.DOOption) config {
 	_config.Remarks = field.NewString(tableName, "remarks")
 	_config.CreateTime = field.NewTime(tableName, "create_time")
 	_config.UpdateTime = field.NewTime(tableName, "update_time")
+	_config.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_config.fillFieldMap()
 
@@ -50,6 +51,7 @@ type config struct {
 	Remarks    field.String
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +74,7 @@ func (c *config) updateTableName(table string) *config {
 	c.Remarks = field.NewString(table, "remarks")
 	c.CreateTime = field.NewTime(table, "create_time")
 	c.UpdateTime = field.NewTime(table, "update_time")
+	c.IsDelete = field.NewInt32(table, "is_delete")
 
 	c.fillFieldMap()
 
@@ -88,13 +91,14 @@ func (c *config) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *config) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 6)
+	c.fieldMap = make(map[string]field.Expr, 7)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["name"] = c.Name
 	c.fieldMap["value"] = c.Value
 	c.fieldMap["remarks"] = c.Remarks
 	c.fieldMap["create_time"] = c.CreateTime
 	c.fieldMap["update_time"] = c.UpdateTime
+	c.fieldMap["is_delete"] = c.IsDelete
 }
 
 func (c config) clone(db *gorm.DB) config {

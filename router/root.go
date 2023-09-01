@@ -1,20 +1,20 @@
 package router
 
 import (
-	"chatgpt-web-new-go/router/authHandlers"
-	"chatgpt-web-new-go/router/carmiHandlers"
-	"chatgpt-web-new-go/router/chatHandlers"
-	"chatgpt-web-new-go/router/configHandlers"
-	"chatgpt-web-new-go/router/imagesHandlers"
-	"chatgpt-web-new-go/router/messageHandlers"
+	"chatgpt-web-new-go/router/front/authHandlers"
+	"chatgpt-web-new-go/router/front/carmiHandlers"
+	"chatgpt-web-new-go/router/front/chatHandlers"
+	"chatgpt-web-new-go/router/front/configHandlers"
+	"chatgpt-web-new-go/router/front/imagesHandlers"
+	"chatgpt-web-new-go/router/front/messageHandlers"
+	"chatgpt-web-new-go/router/front/payHandlers"
+	"chatgpt-web-new-go/router/front/personaHandlers"
+	"chatgpt-web-new-go/router/front/pluginHandlers"
+	"chatgpt-web-new-go/router/front/productHandlers"
+	"chatgpt-web-new-go/router/front/signInHandlers"
+	"chatgpt-web-new-go/router/front/turnoverHandlers"
+	"chatgpt-web-new-go/router/front/userHandlers"
 	"chatgpt-web-new-go/router/middlewares"
-	"chatgpt-web-new-go/router/payHandlers"
-	"chatgpt-web-new-go/router/personaHandlers"
-	"chatgpt-web-new-go/router/pluginHandlers"
-	"chatgpt-web-new-go/router/productHandlers"
-	"chatgpt-web-new-go/router/signInHandlers"
-	"chatgpt-web-new-go/router/turnoverHandlers"
-	"chatgpt-web-new-go/router/userHandlers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,6 +24,8 @@ func Init(r *gin.Engine) {
 
 	// api root
 	apiRoot := r.Group("/api")
+
+	adminGroup(apiRoot.Group("/admin"))
 
 	// root group
 	authGroup(apiRoot.Group(""))
@@ -50,7 +52,7 @@ func Init(r *gin.Engine) {
 	// pay TODO
 	payGroup(apiRoot.Group("/pay"))
 
-	// carmi TODO
+	// carmiHandlers
 	carmiGroup(apiRoot.Group("/use_carmi"))
 
 	// signIn

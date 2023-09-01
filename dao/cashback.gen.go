@@ -39,6 +39,7 @@ func newCashback(db *gorm.DB, opts ...gen.DOOption) cashback {
 	_cashback.Status = field.NewInt32(tableName, "status")
 	_cashback.CreateTime = field.NewTime(tableName, "create_time")
 	_cashback.UpdateTime = field.NewTime(tableName, "update_time")
+	_cashback.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_cashback.fillFieldMap()
 
@@ -60,6 +61,7 @@ type cashback struct {
 	Status           field.Int32 // 0异常 1正常 3审核中 6等待下发
 	CreateTime       field.Time
 	UpdateTime       field.Time
+	IsDelete         field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -87,6 +89,7 @@ func (c *cashback) updateTableName(table string) *cashback {
 	c.Status = field.NewInt32(table, "status")
 	c.CreateTime = field.NewTime(table, "create_time")
 	c.UpdateTime = field.NewTime(table, "update_time")
+	c.IsDelete = field.NewInt32(table, "is_delete")
 
 	c.fillFieldMap()
 
@@ -103,7 +106,7 @@ func (c *cashback) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cashback) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 11)
+	c.fieldMap = make(map[string]field.Expr, 12)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["user_id"] = c.UserID
 	c.fieldMap["benefit_id"] = c.BenefitID
@@ -115,6 +118,7 @@ func (c *cashback) fillFieldMap() {
 	c.fieldMap["status"] = c.Status
 	c.fieldMap["create_time"] = c.CreateTime
 	c.fieldMap["update_time"] = c.UpdateTime
+	c.fieldMap["is_delete"] = c.IsDelete
 }
 
 func (c cashback) clone(db *gorm.DB) cashback {

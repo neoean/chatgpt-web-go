@@ -40,6 +40,7 @@ func newInviteRecord(db *gorm.DB, opts ...gen.DOOption) inviteRecord {
 	_inviteRecord.UserAgent = field.NewString(tableName, "user_agent")
 	_inviteRecord.CreateTime = field.NewTime(tableName, "create_time")
 	_inviteRecord.UpdateTime = field.NewTime(tableName, "update_time")
+	_inviteRecord.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_inviteRecord.fillFieldMap()
 
@@ -62,6 +63,7 @@ type inviteRecord struct {
 	UserAgent  field.String // ua
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -90,6 +92,7 @@ func (i *inviteRecord) updateTableName(table string) *inviteRecord {
 	i.UserAgent = field.NewString(table, "user_agent")
 	i.CreateTime = field.NewTime(table, "create_time")
 	i.UpdateTime = field.NewTime(table, "update_time")
+	i.IsDelete = field.NewInt32(table, "is_delete")
 
 	i.fillFieldMap()
 
@@ -106,7 +109,7 @@ func (i *inviteRecord) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (i *inviteRecord) fillFieldMap() {
-	i.fieldMap = make(map[string]field.Expr, 12)
+	i.fieldMap = make(map[string]field.Expr, 13)
 	i.fieldMap["id"] = i.ID
 	i.fieldMap["user_id"] = i.UserID
 	i.fieldMap["invite_code"] = i.InviteCode
@@ -119,6 +122,7 @@ func (i *inviteRecord) fillFieldMap() {
 	i.fieldMap["user_agent"] = i.UserAgent
 	i.fieldMap["create_time"] = i.CreateTime
 	i.fieldMap["update_time"] = i.UpdateTime
+	i.fieldMap["is_delete"] = i.IsDelete
 }
 
 func (i inviteRecord) clone(db *gorm.DB) inviteRecord {

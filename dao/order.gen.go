@@ -46,6 +46,7 @@ func newOrder(db *gorm.DB, opts ...gen.DOOption) order {
 	_order.IP = field.NewString(tableName, "ip")
 	_order.CreateTime = field.NewTime(tableName, "create_time")
 	_order.UpdateTime = field.NewTime(tableName, "update_time")
+	_order.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_order.fillFieldMap()
 
@@ -74,6 +75,7 @@ type order struct {
 	IP           field.String
 	CreateTime   field.Time
 	UpdateTime   field.Time
+	IsDelete     field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -108,6 +110,7 @@ func (o *order) updateTableName(table string) *order {
 	o.IP = field.NewString(table, "ip")
 	o.CreateTime = field.NewTime(table, "create_time")
 	o.UpdateTime = field.NewTime(table, "update_time")
+	o.IsDelete = field.NewInt32(table, "is_delete")
 
 	o.fillFieldMap()
 
@@ -124,7 +127,7 @@ func (o *order) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (o *order) fillFieldMap() {
-	o.fieldMap = make(map[string]field.Expr, 18)
+	o.fieldMap = make(map[string]field.Expr, 19)
 	o.fieldMap["id"] = o.ID
 	o.fieldMap["trade_no"] = o.TradeNo
 	o.fieldMap["trade_status"] = o.TradeStatus
@@ -143,6 +146,7 @@ func (o *order) fillFieldMap() {
 	o.fieldMap["ip"] = o.IP
 	o.fieldMap["create_time"] = o.CreateTime
 	o.fieldMap["update_time"] = o.UpdateTime
+	o.fieldMap["is_delete"] = o.IsDelete
 }
 
 func (o order) clone(db *gorm.DB) order {

@@ -18,6 +18,7 @@ type Turnover struct {
 	Value      string    `gorm:"column:value;not null;comment:值" json:"value"`        // 值
 	CreateTime time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime time.Time `gorm:"column:update_time;not null;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete   int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName Turnover's table name

@@ -40,6 +40,7 @@ func newDrawRecord(db *gorm.DB, opts ...gen.DOOption) drawRecord {
 	_drawRecord.Status = field.NewInt32(tableName, "status")
 	_drawRecord.CreateTime = field.NewTime(tableName, "create_time")
 	_drawRecord.UpdateTime = field.NewTime(tableName, "update_time")
+	_drawRecord.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_drawRecord.fillFieldMap()
 
@@ -62,6 +63,7 @@ type drawRecord struct {
 	Status        field.Int32  // 状态 0被删 1公开 4私有
 	CreateTime    field.Time
 	UpdateTime    field.Time
+	IsDelete      field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -90,6 +92,7 @@ func (d *drawRecord) updateTableName(table string) *drawRecord {
 	d.Status = field.NewInt32(table, "status")
 	d.CreateTime = field.NewTime(table, "create_time")
 	d.UpdateTime = field.NewTime(table, "update_time")
+	d.IsDelete = field.NewInt32(table, "is_delete")
 
 	d.fillFieldMap()
 
@@ -106,7 +109,7 @@ func (d *drawRecord) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (d *drawRecord) fillFieldMap() {
-	d.fieldMap = make(map[string]field.Expr, 12)
+	d.fieldMap = make(map[string]field.Expr, 13)
 	d.fieldMap["id"] = d.ID
 	d.fieldMap["user_id"] = d.UserID
 	d.fieldMap["inset_image_url"] = d.InsetImageURL
@@ -119,6 +122,7 @@ func (d *drawRecord) fillFieldMap() {
 	d.fieldMap["status"] = d.Status
 	d.fieldMap["create_time"] = d.CreateTime
 	d.fieldMap["update_time"] = d.UpdateTime
+	d.fieldMap["is_delete"] = d.IsDelete
 }
 
 func (d drawRecord) clone(db *gorm.DB) drawRecord {

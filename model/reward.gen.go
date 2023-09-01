@@ -20,6 +20,7 @@ type Reward struct {
 	Status     int32     `gorm:"column:status;not null;default:1;comment:1有效" json:"status"`   // 1有效
 	CreateTime time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime time.Time `gorm:"column:update_time;not null;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete   int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName Reward's table name

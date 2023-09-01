@@ -36,6 +36,7 @@ func newPayment(db *gorm.DB, opts ...gen.DOOption) payment {
 	_payment.Status = field.NewInt32(tableName, "status")
 	_payment.CreateTime = field.NewTime(tableName, "create_time")
 	_payment.UpdateTime = field.NewTime(tableName, "update_time")
+	_payment.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_payment.fillFieldMap()
 
@@ -54,6 +55,7 @@ type payment struct {
 	Status     field.Int32  // 1 正常 0异常
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -78,6 +80,7 @@ func (p *payment) updateTableName(table string) *payment {
 	p.Status = field.NewInt32(table, "status")
 	p.CreateTime = field.NewTime(table, "create_time")
 	p.UpdateTime = field.NewTime(table, "update_time")
+	p.IsDelete = field.NewInt32(table, "is_delete")
 
 	p.fillFieldMap()
 
@@ -94,7 +97,7 @@ func (p *payment) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *payment) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 8)
+	p.fieldMap = make(map[string]field.Expr, 9)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["name"] = p.Name
 	p.fieldMap["channel"] = p.Channel
@@ -103,6 +106,7 @@ func (p *payment) fillFieldMap() {
 	p.fieldMap["status"] = p.Status
 	p.fieldMap["create_time"] = p.CreateTime
 	p.fieldMap["update_time"] = p.UpdateTime
+	p.fieldMap["is_delete"] = p.IsDelete
 }
 
 func (p payment) clone(db *gorm.DB) payment {

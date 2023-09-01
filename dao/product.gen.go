@@ -41,6 +41,7 @@ func newProduct(db *gorm.DB, opts ...gen.DOOption) product {
 	_product.Sort = field.NewInt32(tableName, "sort")
 	_product.CreateTime = field.NewTime(tableName, "create_time")
 	_product.UpdateTime = field.NewTime(tableName, "update_time")
+	_product.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_product.fillFieldMap()
 
@@ -64,6 +65,7 @@ type product struct {
 	Sort          field.Int32  // 排序
 	CreateTime    field.Time
 	UpdateTime    field.Time
+	IsDelete      field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -93,6 +95,7 @@ func (p *product) updateTableName(table string) *product {
 	p.Sort = field.NewInt32(table, "sort")
 	p.CreateTime = field.NewTime(table, "create_time")
 	p.UpdateTime = field.NewTime(table, "update_time")
+	p.IsDelete = field.NewInt32(table, "is_delete")
 
 	p.fillFieldMap()
 
@@ -109,7 +112,7 @@ func (p *product) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *product) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 13)
+	p.fieldMap = make(map[string]field.Expr, 14)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["title"] = p.Title
 	p.fieldMap["price"] = p.Price
@@ -123,6 +126,7 @@ func (p *product) fillFieldMap() {
 	p.fieldMap["sort"] = p.Sort
 	p.fieldMap["create_time"] = p.CreateTime
 	p.fieldMap["update_time"] = p.UpdateTime
+	p.fieldMap["is_delete"] = p.IsDelete
 }
 
 func (p product) clone(db *gorm.DB) product {
