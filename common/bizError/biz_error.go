@@ -44,4 +44,10 @@ var (
 
 	AiKeyTokenDeleteError = NewBizError(170000, "Token删除异常！")
 	AiKeyTokenUpdateError = NewBizError(170001, "Token更新异常！")
+
+	PaymentDeleteError = NewBizError(180000, "支付配置删除异常！")
+	PaymentUpdateError = NewBizError(180001, "支付配置更新异常！")
+
+	NotificationDeleteError = NewBizError(190000, "同志更新异常！")
+	NotificationUpdateError = NewBizError(190001, "同志更新异常！")
 )

@@ -39,7 +39,7 @@ func ConfigList(ctx context.Context) (result map[string]interface{}, err error) 
 		result[c.Name] = c.Value
 	}
 
-	// notification
+	// notificationHandlers
 	dn := dao.Q.Notification
 	notifications, err := dn.WithContext(ctx).Where(dn.Status.Eq(1)).Find()
 	if err != nil {

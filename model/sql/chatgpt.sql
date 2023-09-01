@@ -316,7 +316,7 @@ CREATE TABLE `message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Table structure for notification
+-- Table structure for notificationHandlers
 -- ----------------------------
 DROP TABLE IF EXISTS `notification`;
 CREATE TABLE `notification` (
