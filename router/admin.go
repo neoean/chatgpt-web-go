@@ -12,6 +12,7 @@ import (
 	"chatgpt-web-new-go/router/admin/orderHandlers"
 	"chatgpt-web-new-go/router/admin/payHandlers"
 	"chatgpt-web-new-go/router/admin/personaHandlers"
+	"chatgpt-web-new-go/router/admin/pluginHandlers"
 	"chatgpt-web-new-go/router/admin/productHandlers"
 	"chatgpt-web-new-go/router/admin/signinHandlers"
 	"chatgpt-web-new-go/router/admin/tokenHandlers"
@@ -73,6 +74,16 @@ func adminGroup(group *gin.RouterGroup) {
 
 	// persona
 	adminPersonaGroup(group.Group("/persona"))
+
+	// plugins
+	adminPluginGroup(group.Group("/plugins"))
+}
+
+func adminPluginGroup(group *gin.RouterGroup) {
+	group.GET("", pluginHandlers.List)
+	group.PUT("", pluginHandlers.Update)
+	group.POST("", pluginHandlers.Add)
+	group.DELETE("/:id", pluginHandlers.Delete)
 }
 
 func adminPersonaGroup(group *gin.RouterGroup) {
