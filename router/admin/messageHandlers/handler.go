@@ -9,7 +9,7 @@ import (
 
 func MessageList(c *gin.Context) {
 	request := &base.Page{}
-	if err := c.BindJSON(request); err != nil {
+	if err := c.Bind(request); err != nil {
 		logs.Error("json bind error: %v", err)
 		base.Fail(c, "参数异常！"+err.Error())
 		return
