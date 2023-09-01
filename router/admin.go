@@ -6,6 +6,7 @@ import (
 	"chatgpt-web-new-go/router/admin/cashbackHandlers"
 	"chatgpt-web-new-go/router/admin/configHandlers"
 	"chatgpt-web-new-go/router/admin/dialogHandlers"
+	"chatgpt-web-new-go/router/admin/drawHandlers"
 	"chatgpt-web-new-go/router/admin/inviteHandlers"
 	"chatgpt-web-new-go/router/admin/messageHandlers"
 	"chatgpt-web-new-go/router/admin/notificationHandlers"
@@ -77,6 +78,16 @@ func adminGroup(group *gin.RouterGroup) {
 
 	// plugins
 	adminPluginGroup(group.Group("/plugins"))
+
+	// draw_record
+	adminDrawGroup(group.Group("/draw_record"))
+}
+
+func adminDrawGroup(group *gin.RouterGroup) {
+	group.GET("", drawHandlers.List)
+	group.PUT("", drawHandlers.Update)
+	group.POST("", drawHandlers.Add)
+	group.DELETE("/:id", drawHandlers.Delete)
 }
 
 func adminPluginGroup(group *gin.RouterGroup) {
