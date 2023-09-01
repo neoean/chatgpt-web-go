@@ -1,11 +1,11 @@
-package notificationHandlers
+package amountHandlers
 
 import (
 	"chatgpt-web-new-go/common/logs"
 	"chatgpt-web-new-go/common/types"
 	"chatgpt-web-new-go/model"
 	"chatgpt-web-new-go/router/base"
-	"chatgpt-web-new-go/service/notification"
+	"chatgpt-web-new-go/service/amount"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,9 +17,9 @@ func List(c *gin.Context) {
 		return
 	}
 
-	notifications, count, err := notification.GetList(c, request.Page, request.PageSize)
+	notifications, count, err := amount.List(c, request.Page, request.PageSize)
 	if err != nil {
-		logs.Error("notification list error: %v", err)
+		logs.Error("amount list error: %v", err)
 		base.Fail(c, "查询异常："+err.Error())
 		return
 	}
@@ -30,35 +30,17 @@ func List(c *gin.Context) {
 	})
 }
 
-func Add(c *gin.Context) {
-	request := &model.Notification{}
-	if err := c.BindJSON(request); err != nil {
-		logs.Error("json bind error: %v", err)
-		base.Fail(c, "参数异常："+err.Error())
-		return
-	}
-
-	err := notification.Add(c, request)
-	if err != nil {
-		logs.Error("notification create error: %v", err)
-		base.Fail(c, "创建失败："+err.Error())
-		return
-	}
-
-	base.SuccessMsg(c, "创建成功", nil)
-}
-
 func Update(c *gin.Context) {
-	request := &model.Notification{}
+	request := &model.AmountDetail{}
 	if err := c.BindJSON(request); err != nil {
 		logs.Error("json bind error: %v", err)
 		base.Fail(c, "参数异常："+err.Error())
 		return
 	}
 
-	err := notification.Update(c, request)
+	err := amount.Update(c, request)
 	if err != nil {
-		logs.Error("notification update error: %v", err)
+		logs.Error("amount update error: %v", err)
 		base.Fail(c, "更新失败："+err.Error())
 		return
 	}
@@ -75,9 +57,9 @@ func Delete(c *gin.Context) {
 	}
 
 	id := types.StringToInt64(idStr)
-	err := notification.Delete(c, id)
+	err := amount.Delete(c, id)
 	if err != nil {
-		logs.Error("notification delete error: %v", err)
+		logs.Error("amount delete error: %v", err)
 		base.Fail(c, "删除失败！"+err.Error())
 		return
 	}
