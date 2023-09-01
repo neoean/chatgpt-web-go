@@ -4,6 +4,9 @@ import (
 	"chatgpt-web-new-go/router/admin/carmiHandlers"
 	"chatgpt-web-new-go/router/admin/configHandlers"
 	"chatgpt-web-new-go/router/admin/messageHandlers"
+	"chatgpt-web-new-go/router/admin/notificationHandlers"
+	"chatgpt-web-new-go/router/admin/orderHandlers"
+	"chatgpt-web-new-go/router/admin/payHandlers"
 	"chatgpt-web-new-go/router/admin/productHandlers"
 	"chatgpt-web-new-go/router/admin/signinHandlers"
 	"chatgpt-web-new-go/router/admin/tokenHandlers"
@@ -37,6 +40,33 @@ func adminGroup(group *gin.RouterGroup) {
 
 	// config
 	adminConfigGroup(group.Group("/config"))
+
+	// pay
+	adminPayGroup(group.Group("/pay"))
+
+	// orders
+	adminOrderGroup(group.Group("/orders"))
+
+	// notice
+	adminNotificationGroup(group.Group("/notification"))
+}
+
+func adminNotificationGroup(group *gin.RouterGroup) {
+	group.GET("", notificationHandlers.List)
+	group.POST("", notificationHandlers.Add)
+	group.PUT("", notificationHandlers.Update)
+	group.DELETE("/:id", notificationHandlers.Delete)
+}
+
+func adminOrderGroup(group *gin.RouterGroup) {
+	group.GET("", orderHandlers.OrderList)
+}
+
+func adminPayGroup(group *gin.RouterGroup) {
+	group.GET("", payHandlers.PayConfigList)
+	group.POST("", payHandlers.PayConfigAdd)
+	group.PUT("", payHandlers.PayConfigUpdate)
+	group.DELETE("/:id", payHandlers.PayConfigDelete)
 }
 
 func adminConfigGroup(group *gin.RouterGroup) {
