@@ -2,7 +2,9 @@ package router
 
 import (
 	"chatgpt-web-new-go/router/admin/carmiHandlers"
+	"chatgpt-web-new-go/router/admin/cashbackHandlers"
 	"chatgpt-web-new-go/router/admin/configHandlers"
+	"chatgpt-web-new-go/router/admin/inviteHandlers"
 	"chatgpt-web-new-go/router/admin/messageHandlers"
 	"chatgpt-web-new-go/router/admin/notificationHandlers"
 	"chatgpt-web-new-go/router/admin/orderHandlers"
@@ -42,13 +44,33 @@ func adminGroup(group *gin.RouterGroup) {
 	adminConfigGroup(group.Group("/config"))
 
 	// pay
-	adminPayGroup(group.Group("/pay"))
+	adminPayGroup(group.Group("/payment"))
 
 	// orders
 	adminOrderGroup(group.Group("/orders"))
 
 	// notice
 	adminNotificationGroup(group.Group("/notification"))
+
+	// invite_record
+	adminInviteGroup(group.Group("/invite_record"))
+
+	// cashback
+	adminCashbackGroup(group.Group("/cashback"))
+}
+
+func adminCashbackGroup(group *gin.RouterGroup) {
+	group.GET("", cashbackHandlers.CashbackList)
+	group.PUT("", cashbackHandlers.CashbackUpdate)
+	group.DELETE("/:id", cashbackHandlers.CashbackDelete)
+	group.PUT("/pass", cashbackHandlers.CashbackPass)
+}
+
+func adminInviteGroup(group *gin.RouterGroup) {
+	group.GET("", inviteHandlers.InviteRecords)
+	group.PUT("", inviteHandlers.InviteUpdate)
+	group.PUT("/pass", inviteHandlers.InvitePass)
+	group.DELETE("/:id", inviteHandlers.InviteDelete)
 }
 
 func adminNotificationGroup(group *gin.RouterGroup) {
@@ -107,13 +129,13 @@ func adminProductGroup(group *gin.RouterGroup) {
 func adminUserGroup(group *gin.RouterGroup) {
 	group.GET("", userHandlers.UserList)
 	group.DELETE("/:id", userHandlers.UserDelete)
-	group.PUT("/", userHandlers.UserUpdate)
+	group.PUT("", userHandlers.UserUpdate)
 }
 
 func adminCarmiGroup(group *gin.RouterGroup) {
 	group.GET("", carmiHandlers.CarmiList)
+	group.POST("", carmiHandlers.CarmiGen)
 	group.DELETE("/:id", carmiHandlers.CarmiDel)
-	group.POST("/", carmiHandlers.CarmiGen)
 	// TODO
 	group.GET("/check", carmiHandlers.CarmiCheck)
 }

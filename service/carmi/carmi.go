@@ -28,7 +28,7 @@ func UseCarmi(ctx context.Context, uid int64, carmi, ip string) error {
 	}
 
 	// update user
-	nu := CarmiToUser(ctx, uid, c)
+	nu := CarmiToUser(uid, c)
 	du := dao.Q.User
 	updateUserInfo, err := du.WithContext(ctx).Where(du.ID.Eq(uid)).Updates(nu)
 	if err != nil {

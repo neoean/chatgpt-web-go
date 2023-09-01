@@ -2,51 +2,35 @@ package carmi
 
 import (
 	"chatgpt-web-new-go/model"
-	"context"
 	"time"
 )
 
 const (
 	CarmiTypeIntegral = "integral"
-	CarmiTypeVipDays  = "vip_days"
-	CarmiTypeSVipDays = "svip_days"
+	CarmiTypeVipDays  = "day"
+
+	CarmiLevelVip  = 1
+	CarmiLevelSVip = 2
 )
 
-var (
-	typeToHandler = map[string]func(ctx context.Context, uid int64, carmi *model.Carmi) (u *model.User){
-		CarmiTypeIntegral: integralToUser,
-		CarmiTypeVipDays:  vipToUser,
-		CarmiTypeSVipDays: sVipToUser,
-	}
-)
-
-func CarmiToUser(ctx context.Context, uid int64, carmi *model.Carmi) (u *model.User) {
-	f, _ := typeToHandler[carmi.Type]
-	return f(ctx, uid, carmi)
-}
-
-func integralToUser(ctx context.Context, uid int64, carmi *model.Carmi) (u *model.User) {
+func CarmiToUser(uid int64, carmi *model.Carmi) (u *model.User) {
 	u = &model.User{
-		ID:       uid,
-		Integral: carmi.Value,
+		ID: uid,
 	}
-	return
-}
 
-func vipToUser(ctx context.Context, uid int64, carmi *model.Carmi) (u *model.User) {
-	et := time.Now().AddDate(0, 0, int(carmi.Value))
-	u = &model.User{
-		ID:            uid,
-		VipExpireTime: et,
+	if carmi.Type == CarmiTypeIntegral {
+		u.Integral = carmi.Value
 	}
-	return
-}
 
-func sVipToUser(ctx context.Context, uid int64, carmi *model.Carmi) (u *model.User) {
-	et := time.Now().AddDate(0, 0, int(carmi.Value))
-	u = &model.User{
-		ID:             uid,
-		SvipExpireTime: et,
+	if carmi.Type == CarmiTypeVipDays {
+		et := time.Now().AddDate(0, 0, int(carmi.Value))
+		if carmi.Level == CarmiLevelVip {
+			u.VipExpireTime = et
+		}
+		if carmi.Level == CarmiLevelSVip {
+			u.SvipExpireTime = et
+		}
 	}
-	return
+
+	return u
 }

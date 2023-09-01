@@ -37,14 +37,14 @@ func CarmiDel(ctx context.Context, id int64) error {
 	return nil
 }
 
-func CarmiGen(ctx context.Context, r *CarmiGenRequest) (result []*model.Carmi, err error) {
-	var carmiList []*model.Carmi
+func CarmiGen(ctx context.Context, r *CarmiGenRequest) (carmiList []*model.Carmi, err error) {
 	for i := 0; i < r.Quantity; i++ {
 		c := &model.Carmi{
 			Key:     random.GenCarmiKey(),
-			Value:   int32(r.Reward),
+			Value:   r.Reward,
 			Type:    r.Type,
 			EndTime: r.EndTime,
+			Level:   r.Level,
 		}
 		carmiList = append(carmiList, c)
 	}
