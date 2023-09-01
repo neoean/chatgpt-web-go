@@ -39,6 +39,7 @@ func newAmountDetail(db *gorm.DB, opts ...gen.DOOption) amountDetail {
 	_amountDetail.Status = field.NewInt32(tableName, "status")
 	_amountDetail.CreateTime = field.NewTime(tableName, "create_time")
 	_amountDetail.UpdateTime = field.NewTime(tableName, "update_time")
+	_amountDetail.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_amountDetail.fillFieldMap()
 
@@ -60,6 +61,7 @@ type amountDetail struct {
 	Status         field.Int32  // 1-正常
 	CreateTime     field.Time
 	UpdateTime     field.Time
+	IsDelete       field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -87,6 +89,7 @@ func (a *amountDetail) updateTableName(table string) *amountDetail {
 	a.Status = field.NewInt32(table, "status")
 	a.CreateTime = field.NewTime(table, "create_time")
 	a.UpdateTime = field.NewTime(table, "update_time")
+	a.IsDelete = field.NewInt32(table, "is_delete")
 
 	a.fillFieldMap()
 
@@ -103,7 +106,7 @@ func (a *amountDetail) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (a *amountDetail) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 11)
+	a.fieldMap = make(map[string]field.Expr, 12)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["user_id"] = a.UserID
 	a.fieldMap["type"] = a.Type
@@ -115,6 +118,7 @@ func (a *amountDetail) fillFieldMap() {
 	a.fieldMap["status"] = a.Status
 	a.fieldMap["create_time"] = a.CreateTime
 	a.fieldMap["update_time"] = a.UpdateTime
+	a.fieldMap["is_delete"] = a.IsDelete
 }
 
 func (a amountDetail) clone(db *gorm.DB) amountDetail {

@@ -34,6 +34,7 @@ func newSignin(db *gorm.DB, opts ...gen.DOOption) signin {
 	_signin.Status = field.NewInt32(tableName, "status")
 	_signin.CreateTime = field.NewTime(tableName, "create_time")
 	_signin.UpdateTime = field.NewTime(tableName, "update_time")
+	_signin.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_signin.fillFieldMap()
 
@@ -50,6 +51,7 @@ type signin struct {
 	Status     field.Int32
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +74,7 @@ func (s *signin) updateTableName(table string) *signin {
 	s.Status = field.NewInt32(table, "status")
 	s.CreateTime = field.NewTime(table, "create_time")
 	s.UpdateTime = field.NewTime(table, "update_time")
+	s.IsDelete = field.NewInt32(table, "is_delete")
 
 	s.fillFieldMap()
 
@@ -88,13 +91,14 @@ func (s *signin) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *signin) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 6)
+	s.fieldMap = make(map[string]field.Expr, 7)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["user_id"] = s.UserID
 	s.fieldMap["ip"] = s.IP
 	s.fieldMap["status"] = s.Status
 	s.fieldMap["create_time"] = s.CreateTime
 	s.fieldMap["update_time"] = s.UpdateTime
+	s.fieldMap["is_delete"] = s.IsDelete
 }
 
 func (s signin) clone(db *gorm.DB) signin {

@@ -34,6 +34,7 @@ func newTurnover(db *gorm.DB, opts ...gen.DOOption) turnover {
 	_turnover.Value = field.NewString(tableName, "value")
 	_turnover.CreateTime = field.NewTime(tableName, "create_time")
 	_turnover.UpdateTime = field.NewTime(tableName, "update_time")
+	_turnover.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_turnover.fillFieldMap()
 
@@ -50,6 +51,7 @@ type turnover struct {
 	Value      field.String // 值
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +74,7 @@ func (t *turnover) updateTableName(table string) *turnover {
 	t.Value = field.NewString(table, "value")
 	t.CreateTime = field.NewTime(table, "create_time")
 	t.UpdateTime = field.NewTime(table, "update_time")
+	t.IsDelete = field.NewInt32(table, "is_delete")
 
 	t.fillFieldMap()
 
@@ -88,13 +91,14 @@ func (t *turnover) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (t *turnover) fillFieldMap() {
-	t.fieldMap = make(map[string]field.Expr, 6)
+	t.fieldMap = make(map[string]field.Expr, 7)
 	t.fieldMap["id"] = t.ID
 	t.fieldMap["user_id"] = t.UserID
 	t.fieldMap["describe"] = t.Describe
 	t.fieldMap["value"] = t.Value
 	t.fieldMap["create_time"] = t.CreateTime
 	t.fieldMap["update_time"] = t.UpdateTime
+	t.fieldMap["is_delete"] = t.IsDelete
 }
 
 func (t turnover) clone(db *gorm.DB) turnover {

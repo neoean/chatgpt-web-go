@@ -25,6 +25,7 @@ CREATE TABLE `action` (
   `ip` varchar(15) NOT NULL DEFAULT '',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -45,6 +46,7 @@ CREATE TABLE `aikey` (
   `status` tinyint(4) DEFAULT '1' COMMENT '1 正常 0异常',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -64,11 +66,12 @@ CREATE TABLE `amount_details` (
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1-正常',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Table structure for carmi
+-- Table structure for carmiHandlers
 -- ----------------------------
 DROP TABLE IF EXISTS `carmi`;
 CREATE TABLE `carmi` (
@@ -76,13 +79,14 @@ CREATE TABLE `carmi` (
   `ip` varchar(15) NOT NULL DEFAULT '' COMMENT '使用时候的ip',
   `user_id` bigint(11) NOT NULL DEFAULT '0' COMMENT '使用者',
   `key` varchar(64) NOT NULL DEFAULT '' COMMENT '卡密',
-  `value` varchar(11) NOT NULL DEFAULT '' COMMENT '积分',
+  `value` int(8) NOT NULL DEFAULT '0' COMMENT '积分/天数',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0有效 1使用 2过期',
-  `type` varchar(8) NOT NULL DEFAULT '' COMMENT '类型',
+  `type` varchar(8) NOT NULL DEFAULT '' COMMENT '类型 integral/vip_days/svip_days',
   `end_time` varchar(32) NOT NULL DEFAULT '' COMMENT '截止时间',
   `level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '卡密充值等级',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -102,6 +106,7 @@ CREATE TABLE `cashback` (
   `status` tinyint(4) NOT NULL DEFAULT '3' COMMENT '0异常 1正常 3审核中 6等待下发',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`benefit_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -116,6 +121,7 @@ CREATE TABLE `config` (
   `remarks` varchar(255) NOT NULL DEFAULT '',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 
@@ -123,28 +129,92 @@ CREATE TABLE `config` (
 -- Records of config
 -- ----------------------------
 BEGIN;
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (1, 'signin_reward', '100', '签到奖励', '2023-05-19 16:21:12', '2023-07-10 22:06:37');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (2, 'register_reward', '100', '注册奖励', '2023-05-19 16:21:49', '2023-07-11 09:44:11');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (3, 'ai3_carry_count', '30', '3版本携带历史聊天数量', '2023-05-21 14:57:37', '2023-07-11 09:44:22');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (4, 'ai3_ratio', '100', '3版本比例 每1积分等于多少token', '2023-05-25 16:40:18', '2023-07-10 23:28:38');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (5, 'ai4_ratio', '0.1', '4版本比例 每1积分等于多少token', '2023-05-25 16:40:20', '2023-06-26 14:26:09');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (6, 'draw_price', '50', '绘画价格 ', '2023-05-25 16:58:26', '2023-07-10 22:06:58');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (7, 'shop_introduce', '<p><br></p>', '商城介绍', '2023-05-29 11:51:39', '2023-07-11 00:42:36');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (8, 'user_introduce', '<p><br></p>', '用户中心介绍', '2023-05-29 11:52:07', '2023-07-11 00:42:39');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (9, 'website_title', 'ChatGpt', '网站标题', '2023-06-07 11:08:56', '2023-07-11 09:44:00');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (10, 'website_description', '我是一个基于OpenAI的ChatGpt应用。', '网站描述', '2023-06-07 11:08:57', '2023-07-09 22:23:14');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (11, 'website_keywords', 'Openai,chat,Gpt,AI', '网站关键词', '2023-06-07 11:09:44', '2023-07-09 22:23:14');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (12, 'website_logo', 'https://u1.dl0.cn/icon/openailogo.svg', '网站logo', '2023-06-07 11:10:05', '2023-06-07 13:01:39');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (13, 'website_footer', '', '网站页脚信息html', '2023-06-07 11:12:13', '2023-06-20 19:32:16');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (14, 'prohibited_words', '习近平,共产党', '违禁词', '2023-06-09 10:04:13', '2023-06-09 12:55:50');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (15, 'tuputech_key', '', '内容检查KEY', '2023-06-09 11:20:51', '2023-06-10 17:37:28');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (16, 'invite_introduce', '<p><br></p>', '邀请页面说明', '2023-06-10 17:37:02', '2023-07-11 00:42:44');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (17, 'invite_reward', '1000', '邀请奖励', '2023-06-10 18:13:30', '2023-07-10 22:06:37');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (18, 'cashback_ratio', '10', '', '2023-06-10 18:40:02', '2023-07-11 09:44:15');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (19, 'sms', '{\"user\":\"duanxinbao\",\"password\":\"duanxinbao\",\"signin\":\"Ai之家\",\"template\":\"您的验证码为：{code}，有效期{time}分钟，请勿泄露。如非本人操作，请忽略此短信。谢谢！\"}', '', '2023-06-24 20:09:59', '2023-07-11 09:44:54');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (20, 'email', '{\"host\":\"smtp.163.com\",\"port\":465,\"user\":\"noticecode@163.com\",\"pass\":\"DQXHGOZAZLZCIUCZ\",\"from_title\":\"Ai之家\",\"subject\":\"系统邮件通知\"}', '', '2023-06-24 20:35:11', '2023-07-11 09:45:01');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (21, 'ai4_carry_count', '10', '4版本携带历史聊天数量', '2023-06-25 14:44:08', '2023-07-10 22:05:59');
-INSERT INTO `config` (`id`, `name`, `value`, `remarks`, `create_time`, `update_time`) VALUES (22, 'cloud_storage', '{\"type\":\"local\"}', '', '2023-07-30 19:24:05', '2023-08-06 17:06:07');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (1, 'signin_reward', '100', '签到奖励', '2023-05-19 16:21:12', '2023-07-10 22:06:37');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (2, 'register_reward', '100', '注册奖励', '2023-05-19 16:21:49', '2023-07-11 09:44:11');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (3, 'ai3_carry_count', '30', '3版本携带历史聊天数量', '2023-05-21 14:57:37', '2023-07-11 09:44:22');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (4, 'ai3_ratio', '100', '3版本比例 每1积分等于多少token', '2023-05-25 16:40:18', '2023-07-10 23:28:38');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (5, 'ai4_ratio', '0.1', '4版本比例 每1积分等于多少token', '2023-05-25 16:40:20', '2023-06-26 14:26:09');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (6, 'draw_price', '50', '绘画价格 ', '2023-05-25 16:58:26', '2023-07-10 22:06:58');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (7, 'shop_introduce', '<p><br></p>', '商城介绍', '2023-05-29 11:51:39', '2023-07-11 00:42:36');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (8, 'user_introduce', '<p><br></p>', '用户中心介绍', '2023-05-29 11:52:07', '2023-07-11 00:42:39');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (9, 'website_title', 'ChatGpt', '网站标题', '2023-06-07 11:08:56', '2023-07-11 09:44:00');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (10, 'website_description', '我是一个基于OpenAI的ChatGpt应用。', '网站描述', '2023-06-07 11:08:57', '2023-07-09 22:23:14');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (11, 'website_keywords', 'Openai,chat,Gpt,AI', '网站关键词', '2023-06-07 11:09:44', '2023-07-09 22:23:14');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (12, 'website_logo', 'https://u1.dl0.cn/icon/openailogo.svg', '网站logo', '2023-06-07 11:10:05', '2023-06-07 13:01:39');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (13, 'website_footer', '', '网站页脚信息html', '2023-06-07 11:12:13', '2023-06-20 19:32:16');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (14, 'prohibited_words', '习近平,共产党', '违禁词', '2023-06-09 10:04:13', '2023-06-09 12:55:50');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (15, 'tuputech_key', '', '内容检查KEY', '2023-06-09 11:20:51', '2023-06-10 17:37:28');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (16, 'invite_introduce', '<p><br></p>', '邀请页面说明', '2023-06-10 17:37:02', '2023-07-11 00:42:44');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (17, 'invite_reward', '1000', '邀请奖励', '2023-06-10 18:13:30', '2023-07-10 22:06:37');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (18, 'cashback_ratio', '10', '', '2023-06-10 18:40:02', '2023-07-11 09:44:15');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (19, 'sms', '{"user":"duanxinbao","password":"duanxinbao","sign":"Ai之家","template":"您的验证码为：{code}，有效期{time}分钟，请勿泄露。如非本人操作，请忽略此短信。谢谢！"}', '', '2023-06-24 20:09:59', '2023-07-11 09:44:54');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (20, 'email', '{"host":"smtp.163.com","port":465,"user":"noticecode@163.com","pass":"DQXHGOZAZLZCIUCZ","from_title":"Ai之家","subject":"系统邮件通知"}', '', '2023-06-24 20:35:11', '2023-07-11 09:45:01');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (21, 'ai4_carry_count', '10', '4版本携带历史聊天数量', '2023-06-25 14:44:08', '2023-07-10 22:05:59');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (22, 'cloud_storage', '{"type":"local"}', '', '2023-07-30 19:24:05', '2023-08-06 17:06:07');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (23, 'chat_models', '[
+    {
+        "app":"openai",
+        "label":"gpt-3.5-turbo-0613",
+        "type":"chat",
+        "value":"gpt-3.5-turbo-0613"
+    },
+    {
+        "app":"openai",
+        "label":"gpt-3.5-turbo-16k-0613",
+        "type":"chat",
+        "value":"gpt-3.5-turbo-16k-0613"
+    },
+    {
+        "app":"openai",
+        "label":"gpt-3.5-turbo-16k",
+        "type":"chat",
+        "value":"gpt-3.5-turbo-16k"
+    },
+    {
+        "app":"openai",
+        "label":"gpt-3.5-turbo",
+        "type":"chat",
+        "value":"gpt-3.5-turbo"
+    }
+]', '', '2023-08-27 15:06:07', '2023-08-27 15:27:11');
+INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (24, 'draw_models', '[
+    {
+        "label":"stable-diffusion-v1-5",
+        "value":"stable-diffusion-v1-5",
+        "type":"draw",
+        "app":"stability"
+    },
+    {
+        "label":"stable-diffusion-512-v2-0",
+        "value":"stable-diffusion-512-v2-0",
+        "type":"draw",
+        "app":"stability"
+    },
+    {
+        "label":"dall-e",
+        "value":"dall-e",
+        "type":"draw",
+        "app":"openai"
+    },
+    {
+        "label":"stablediffusion",
+        "value":"stablediffusion",
+        "type":"draw",
+        "app":"stablediffusion"
+    },
+    {
+        "label":"midjourney",
+        "value":"midjourney",
+        "type":"draw",
+        "app":"stablediffusion"
+    },
+    {
+        "label":"anything-v3",
+        "value":"anything-v3",
+        "type":"draw",
+        "app":"stablediffusion"
+    }
+]', '', '2023-08-27 15:27:58', '2023-08-27 15:27:58');
 COMMIT;
 
 -- ----------------------------
@@ -160,6 +230,7 @@ CREATE TABLE `dialog` (
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -180,6 +251,7 @@ CREATE TABLE `draw_record` (
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态 0被删 1公开 4私有',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=78176141885575169 DEFAULT CHARSET=utf8mb4;
 
@@ -194,6 +266,7 @@ CREATE TABLE `installed_plugin` (
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4;
 
@@ -214,6 +287,7 @@ CREATE TABLE `invite_record` (
   `user_agent` text COMMENT 'ua',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -237,6 +311,7 @@ CREATE TABLE `message` (
   `plugin_id` bigint(11) NOT NULL DEFAULT '0',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -252,6 +327,7 @@ CREATE TABLE `notification` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=53897947229720577 DEFAULT CHARSET=utf8mb4;
 
@@ -278,6 +354,7 @@ CREATE TABLE `order` (
   `ip` varchar(15) NOT NULL DEFAULT '',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -294,6 +371,7 @@ CREATE TABLE `payment` (
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 正常 0异常',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -312,6 +390,7 @@ CREATE TABLE `persona` (
   `system` int(11) NOT NULL DEFAULT '0' COMMENT '系统级别的角色',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -355,6 +434,7 @@ CREATE TABLE `plugin` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '4为审核中1为正常0为异常',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
@@ -364,7 +444,7 @@ CREATE TABLE `plugin` (
 BEGIN;
 INSERT INTO `plugin` (`id`, `name`, `description`, `avatar`, `variables`, `function`, `script`, `user_id`, `status`, `create_time`, `update_time`) VALUES (70560740192292864, '心知天气', 'Query china real time weather information from seniverse.com', 'https://static.sencdn.com/brand/logo/logo-red-text-gray-2x.png', '[{\"label\":\"SENIVERSE_API_KEY\",\"value\":\"S3886uIwXoQFrOA6t\"}]', '{\n  \"name\": \"search_weather\",\n  \"description\": \"Query china real time weather information from seniverse.com\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"location\": {\n        \"type\": \"string\",\n        \"description\": \"China Pinyin Location name, e.g. beijing\"\n      }\n    },\n    \"required\": [\n      \"location\"\n    ]\n  }\n}', 'async function search_weather({location}) {\n  return await fetch(`https://api.seniverse.com/v3/weather/daily.json?key=${process.env.SENIVERSE_API_KEY}&location=${location}&language=zh-Hans&unit=c&start=-1&days=5`)\n    .then(res => res.json());\n}', 63366622672326656, 1, '2023-07-14 17:03:11', '2023-07-21 00:44:46');
 INSERT INTO `plugin` (`id`, `name`, `description`, `avatar`, `variables`, `function`, `script`, `user_id`, `status`, `create_time`, `update_time`) VALUES (70561055134191616, 'IP信息', 'Query ip information based on ip address', 'https://ipinfo.io/_next/static/media/logo.a3c39026.svg', '[]', '{\n  \"name\": \"search_ip\",\n  \"description\": \"Query ip information based on ip address\",\n  \"parameters\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"ip\": {\n        \"type\": \"string\",\n        \"description\": \"ip address, eg:1.1.1.1\"\n      }\n    },\n    \"required\": [\n      \"ip\"\n    ]\n  }\n}', 'async function search_ip({ip: ip}) {\n  if (!ip) return;\n  return await fetch(`https://ipinfo.io/${ip}/json`).then((res) => res.json())\n}', '0', 1, '2023-07-14 17:04:26', '2023-07-18 21:26:55');
-INSERT INTO `plugin` (`id`, `name`, `description`, `avatar`, `variables`, `function`, `script`, `user_id`, `status`, `create_time`, `update_time`) VALUES (72850174816292864, 'DuckDuckGo', 'Search web info use DuckDuckGo', 'https://duckduckgo.com/assets/logo_header.v109.svg', NULL, '{\n      \"name\": \"search\",\n      \"description\": \"Search web info use DuckDuckGo\",\n      \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"query\": {\n            \"type\": \"string\",\n            \"description\": \"What to search for\"\n          },\n          \"region\": {\n            \"type\": \"string\",\n            \"description\": \"Region to search in, e.g. us-en, default is zh-cn\"\n          },\n          \"page\": {\n            \"type\": \"integer\",\n            \"description\": \"Page number, default is 1\"\n          }\n        },\n        \"required\": [\n          \"query\"\n        ]\n      }\n    }', 'async function search({query: query, region: region = \'zh-cn\', page: page = 1}) {\n  try {\n    const response = await fetch(`https://duckduckgo.com/?q=${encodeURIComponent(query)}`);\n    const html = await response.text();\n    const regex = /vqd=[\"\']([^\"\']+)[\"\']/;\n    const match = regex.exec(html);\n    const vqd = match && match[1].replaceAll(\'\"\', \"\").replaceAll(\"\'\", \"\");\n    let safe_search_base = {On: 1, Moderate: -1, Off: -2};\n    let PAGINATION_STEP = 25;\n\n    let res = await fetch(`https://links.duckduckgo.com/d.js?q=${encodeURIComponent(query)}&l=${region}&p=${safe_search_base[\"On\"]}&s=${Math.max(PAGINATION_STEP * (page - 1), 0)}&df=${new Date().getTime()}&o=json&vqd=${vqd}`);\n\n    let result = await res.json();\n    let reference_results = [];\n    if (result[\"results\"]) {\n      for (let row of result[\"results\"]) {\n        if (!row[\"n\"]) {\n          let body = row[\"a\"];\n          if (body) {\n            reference_results.push([body, row[\"u\"]]);\n            if (reference_results.length > 2) {\n              break;\n            }\n          }\n        }\n      }\n    }\n    return reference_results\n  } catch (e) {\n    console.log(e)\n    return `no web result`;\n  }\n}', '0', 1, '2023-07-21 00:40:35', '2023-07-21 00:40:35');
+INSERT INTO `plugin` (`id`, `name`, `description`, `avatar`, `variables`, `function`, `script`, `user_id`, `status`, `create_time`, `update_time`) VALUES (72850174816292864, 'DuckDuckGo', 'Search web info use DuckDuckGo', 'https://duckduckgo.com/assets/logo_header.v109.svg', '', '{\n      \"name\": \"search\",\n      \"description\": \"Search web info use DuckDuckGo\",\n      \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"query\": {\n            \"type\": \"string\",\n            \"description\": \"What to search for\"\n          },\n          \"region\": {\n            \"type\": \"string\",\n            \"description\": \"Region to search in, e.g. us-en, default is zh-cn\"\n          },\n          \"page\": {\n            \"type\": \"integer\",\n            \"description\": \"Page number, default is 1\"\n          }\n        },\n        \"required\": [\n          \"query\"\n        ]\n      }\n    }', 'async function search({query: query, region: region = \'zh-cn\', page: page = 1}) {\n  try {\n    const response = await fetch(`https://duckduckgo.com/?q=${encodeURIComponent(query)}`);\n    const html = await response.text();\n    const regex = /vqd=[\"\']([^\"\']+)[\"\']/;\n    const match = regex.exec(html);\n    const vqd = match && match[1].replaceAll(\'\"\', \"\").replaceAll(\"\'\", \"\");\n    let safe_search_base = {On: 1, Moderate: -1, Off: -2};\n    let PAGINATION_STEP = 25;\n\n    let res = await fetch(`https://links.duckduckgo.com/d.js?q=${encodeURIComponent(query)}&l=${region}&p=${safe_search_base[\"On\"]}&s=${Math.max(PAGINATION_STEP * (page - 1), 0)}&df=${new Date().getTime()}&o=json&vqd=${vqd}`);\n\n    let result = await res.json();\n    let reference_results = [];\n    if (result[\"results\"]) {\n      for (let row of result[\"results\"]) {\n        if (!row[\"n\"]) {\n          let body = row[\"a\"];\n          if (body) {\n            reference_results.push([body, row[\"u\"]]);\n            if (reference_results.length > 2) {\n              break;\n            }\n          }\n        }\n      }\n    }\n    return reference_results\n  } catch (e) {\n    console.log(e)\n    return `no web result`;\n  }\n}', '0', 1, '2023-07-21 00:40:35', '2023-07-21 00:40:35');
 INSERT INTO `plugin` (`id`, `name`, `description`, `avatar`, `variables`, `function`, `script`, `user_id`, `status`, `create_time`, `update_time`) VALUES (72851863086567424, 'NewsData.io', 'NewsData.io 新闻机构', 'https://newsdata.io/images/global/newsdata-icon.png', '[{\"label\":\"API_KEY\",\"value\":\"pub_256955db4080f395e9f59fc14a09fa37beb20\"}]', '{\n      \"name\": \"search_latest_news\",\n      \"description\": \"Query latest news articles from NewsData.io\",\n      \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"q\": {\n            \"type\": \"string\",\n            \"description\": \"Search news articles for specific keywords or phrases\"\n          },\n          \"qInTitle\": {\n            \"type\": \"string\",\n            \"description\": \"Search news articles for specific keywords or phrases present in the news titles only\"\n          },\n          \"country\": {\n            \"type\": \"string\",\n            \"description\": \"Search the news articles from a specific country\"\n          },\n          \"category\": {\n            \"type\": \"string\",\n            \"description\": \"Search the news articles for a specific category\"\n          },\n          \"language\": {\n            \"type\": \"string\",\n            \"description\": \"Search the news articles for a specific language\"\n          },\n          \"domain\": {\n            \"type\": \"string\",\n            \"description\": \"Search the news articles for specific domains or news sources\"\n          },\n          \"full_content\": {\n            \"type\": \"boolean\",\n            \"description\": \"Get only those news articles which contain full content of the articles\"\n          },\n          \"image\": {\n            \"type\": \"boolean\",\n            \"description\": \"Get only those news articles which contain images\"\n          },\n          \"video\": {\n            \"type\": \"boolean\",\n            \"description\": \"Get only those news articles which contain videos\"\n          },\n          \"page\": {\n            \"type\": \"string\",\n            \"description\": \"Use page parameter to navigate to the next page\"\n          }\n        },\n        \"required\": [\n          \"q\"\n        ]\n      }\n    }', 'async function search_latest_news({\n                                    q,\n                                    qInTitle,\n                                    country = \'us\',\n                                    category,\n                                    language = \'en\',\n                                    domain,\n                                    page\n                                  }) {\n  const queryParams = new URLSearchParams({\n    apikey: process.env.API_KEY,\n    country,\n    language,\n  });\n  q && queryParams.append(\'q\', q);\n  qInTitle && queryParams.append(\'qInTitle\', qInTitle);\n  category && queryParams.append(\'category\', category);\n  domain && queryParams.append(\'domain\', domain);\n  page && queryParams.append(\'page\', page);\n\n  const url = `https://newsdata.io/api/1/news?${queryParams.toString()}`;\n\n  return await fetch(url).then(res => {\n    // 保留3条\n    return res.json().then(json => {\n      const {status, totalResults, results, nextPage} = json;\n      if (status === \'success\') {\n        return JSON.stringify({\n          status,\n          totalResults,\n          articles: results.slice(0, 3),\n          nextPage\n        });\n      }\n      return JSON.stringify(json);\n    });\n  });\n}', '0', 1, '2023-07-21 00:47:18', '2023-07-21 00:47:18');
 INSERT INTO `plugin` (`id`, `name`, `description`, `avatar`, `variables`, `function`, `script`, `user_id`, `status`, `create_time`, `update_time`) VALUES (72854480437121024, 'TMD电影搜索', 'Query movies from The Movie Database (TMDb)The Movie Database TMDb is a popular online database for movies and TV shows', 'https://files.readme.io/29c6fee-blue_short.svg', '[{\"label\":\"TMDB_API_KEY\",\"value\":\"b324e67bf4dc745667ae52fe5ee6408e\"}]', '{\n      \"name\": \"search_movies\",\n      \"description\": \"Query movies from The Movie Database (TMDb)\",\n      \"parameters\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"query\": {\n            \"type\": \"string\",\n            \"description\": \"The movie or keyword to search for\"\n          },\n          \"page\": {\n            \"type\": \"number\",\n            \"description\": \"The page of results to return\"\n          },\n          \"region\": {\n            \"type\": \"string\",\n            \"description\": \"The region to search within\"\n          }\n        },\n        \"required\": [\n          \"query\"\n        ]\n      }\n    }', 'async function search_movies({ page = 1, query, region = \'US\' }) {\n  const apiKey = process.env.TMDB_API_KEY; // Replace with your TMDB API Key\n  const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}&page=${page}&region=${region}`;\n  const response = await fetch(url);\n  return await response.json();\n}\n', '0', 1, '2023-07-21 00:57:42', '2023-07-21 00:57:42');
 COMMIT;
@@ -388,6 +468,7 @@ CREATE TABLE `product` (
   `sort` int(8) NOT NULL DEFAULT '0' COMMENT '排序',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -404,6 +485,7 @@ CREATE TABLE `reward` (
   `status` tinyint(8) NOT NULL DEFAULT '1' COMMENT '1有效',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -418,6 +500,7 @@ CREATE TABLE `signin` (
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -432,6 +515,7 @@ CREATE TABLE `turnover` (
   `value` varchar(11) NOT NULL DEFAULT '' COMMENT '值',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -453,6 +537,7 @@ CREATE TABLE `upload_record` (
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
 
@@ -477,6 +562,7 @@ CREATE TABLE `user` (
   `user_agent` text COMMENT 'ua',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_account` (`account`),
   UNIQUE KEY  `unique_invite_code` (`invite_code`)
@@ -508,6 +594,7 @@ CREATE TABLE `withdrawal_record` (
   `user_agent` varchar(64) NOT NULL DEFAULT '' COMMENT 'ua',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

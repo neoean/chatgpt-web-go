@@ -43,6 +43,7 @@ func newMessage(db *gorm.DB, opts ...gen.DOOption) message {
 	_message.PluginID = field.NewInt64(tableName, "plugin_id")
 	_message.CreateTime = field.NewTime(tableName, "create_time")
 	_message.UpdateTime = field.NewTime(tableName, "update_time")
+	_message.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_message.fillFieldMap()
 
@@ -68,6 +69,7 @@ type message struct {
 	PluginID         field.Int64
 	CreateTime       field.Time
 	UpdateTime       field.Time
+	IsDelete         field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -99,6 +101,7 @@ func (m *message) updateTableName(table string) *message {
 	m.PluginID = field.NewInt64(table, "plugin_id")
 	m.CreateTime = field.NewTime(table, "create_time")
 	m.UpdateTime = field.NewTime(table, "update_time")
+	m.IsDelete = field.NewInt32(table, "is_delete")
 
 	m.fillFieldMap()
 
@@ -115,7 +118,7 @@ func (m *message) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (m *message) fillFieldMap() {
-	m.fieldMap = make(map[string]field.Expr, 15)
+	m.fieldMap = make(map[string]field.Expr, 16)
 	m.fieldMap["id"] = m.ID
 	m.fieldMap["user_id"] = m.UserID
 	m.fieldMap["content"] = m.Content
@@ -131,6 +134,7 @@ func (m *message) fillFieldMap() {
 	m.fieldMap["plugin_id"] = m.PluginID
 	m.fieldMap["create_time"] = m.CreateTime
 	m.fieldMap["update_time"] = m.UpdateTime
+	m.fieldMap["is_delete"] = m.IsDelete
 }
 
 func (m message) clone(db *gorm.DB) message {

@@ -38,6 +38,7 @@ func newPersona(db *gorm.DB, opts ...gen.DOOption) persona {
 	_persona.System = field.NewInt32(tableName, "system")
 	_persona.CreateTime = field.NewTime(tableName, "create_time")
 	_persona.UpdateTime = field.NewTime(tableName, "update_time")
+	_persona.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_persona.fillFieldMap()
 
@@ -58,6 +59,7 @@ type persona struct {
 	System      field.Int32 // 系统级别的角色
 	CreateTime  field.Time
 	UpdateTime  field.Time
+	IsDelete    field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -84,6 +86,7 @@ func (p *persona) updateTableName(table string) *persona {
 	p.System = field.NewInt32(table, "system")
 	p.CreateTime = field.NewTime(table, "create_time")
 	p.UpdateTime = field.NewTime(table, "update_time")
+	p.IsDelete = field.NewInt32(table, "is_delete")
 
 	p.fillFieldMap()
 
@@ -100,7 +103,7 @@ func (p *persona) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *persona) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 10)
+	p.fieldMap = make(map[string]field.Expr, 11)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["user_id"] = p.UserID
 	p.fieldMap["title"] = p.Title
@@ -111,6 +114,7 @@ func (p *persona) fillFieldMap() {
 	p.fieldMap["system"] = p.System
 	p.fieldMap["create_time"] = p.CreateTime
 	p.fieldMap["update_time"] = p.UpdateTime
+	p.fieldMap["is_delete"] = p.IsDelete
 }
 
 func (p persona) clone(db *gorm.DB) persona {

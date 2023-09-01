@@ -34,6 +34,7 @@ func newInstalledPlugin(db *gorm.DB, opts ...gen.DOOption) installedPlugin {
 	_installedPlugin.Status = field.NewInt32(tableName, "status")
 	_installedPlugin.CreateTime = field.NewTime(tableName, "create_time")
 	_installedPlugin.UpdateTime = field.NewTime(tableName, "update_time")
+	_installedPlugin.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_installedPlugin.fillFieldMap()
 
@@ -50,6 +51,7 @@ type installedPlugin struct {
 	Status     field.Int32
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +74,7 @@ func (i *installedPlugin) updateTableName(table string) *installedPlugin {
 	i.Status = field.NewInt32(table, "status")
 	i.CreateTime = field.NewTime(table, "create_time")
 	i.UpdateTime = field.NewTime(table, "update_time")
+	i.IsDelete = field.NewInt32(table, "is_delete")
 
 	i.fillFieldMap()
 
@@ -88,13 +91,14 @@ func (i *installedPlugin) GetFieldByName(fieldName string) (field.OrderExpr, boo
 }
 
 func (i *installedPlugin) fillFieldMap() {
-	i.fieldMap = make(map[string]field.Expr, 6)
+	i.fieldMap = make(map[string]field.Expr, 7)
 	i.fieldMap["id"] = i.ID
 	i.fieldMap["user_id"] = i.UserID
 	i.fieldMap["plugin_id"] = i.PluginID
 	i.fieldMap["status"] = i.Status
 	i.fieldMap["create_time"] = i.CreateTime
 	i.fieldMap["update_time"] = i.UpdateTime
+	i.fieldMap["is_delete"] = i.IsDelete
 }
 
 func (i installedPlugin) clone(db *gorm.DB) installedPlugin {

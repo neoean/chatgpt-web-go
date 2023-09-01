@@ -35,6 +35,7 @@ func newAction(db *gorm.DB, opts ...gen.DOOption) action {
 	_action.IP = field.NewString(tableName, "ip")
 	_action.CreateTime = field.NewTime(tableName, "create_time")
 	_action.UpdateTime = field.NewTime(tableName, "update_time")
+	_action.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_action.fillFieldMap()
 
@@ -52,6 +53,7 @@ type action struct {
 	IP         field.String
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -75,6 +77,7 @@ func (a *action) updateTableName(table string) *action {
 	a.IP = field.NewString(table, "ip")
 	a.CreateTime = field.NewTime(table, "create_time")
 	a.UpdateTime = field.NewTime(table, "update_time")
+	a.IsDelete = field.NewInt32(table, "is_delete")
 
 	a.fillFieldMap()
 
@@ -91,7 +94,7 @@ func (a *action) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *action) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 7)
+	a.fieldMap = make(map[string]field.Expr, 8)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["user_id"] = a.UserID
 	a.fieldMap["type"] = a.Type
@@ -99,6 +102,7 @@ func (a *action) fillFieldMap() {
 	a.fieldMap["ip"] = a.IP
 	a.fieldMap["create_time"] = a.CreateTime
 	a.fieldMap["update_time"] = a.UpdateTime
+	a.fieldMap["is_delete"] = a.IsDelete
 }
 
 func (a action) clone(db *gorm.DB) action {

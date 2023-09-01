@@ -23,6 +23,7 @@ type Cashback struct {
 	Status           int32     `gorm:"column:status;not null;default:3;comment:0异常 1正常 3审核中 6等待下发" json:"status"` // 0异常 1正常 3审核中 6等待下发
 	CreateTime       time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime       time.Time `gorm:"column:update_time;not null;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete         int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName Cashback's table name

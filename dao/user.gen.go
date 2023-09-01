@@ -44,6 +44,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.UserAgent = field.NewString(tableName, "user_agent")
 	_user.CreateTime = field.NewTime(tableName, "create_time")
 	_user.UpdateTime = field.NewTime(tableName, "update_time")
+	_user.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_user.fillFieldMap()
 
@@ -70,6 +71,7 @@ type user struct {
 	UserAgent      field.String // ua
 	CreateTime     field.Time
 	UpdateTime     field.Time
+	IsDelete       field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -102,6 +104,7 @@ func (u *user) updateTableName(table string) *user {
 	u.UserAgent = field.NewString(table, "user_agent")
 	u.CreateTime = field.NewTime(table, "create_time")
 	u.UpdateTime = field.NewTime(table, "update_time")
+	u.IsDelete = field.NewInt32(table, "is_delete")
 
 	u.fillFieldMap()
 
@@ -118,7 +121,7 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 16)
+	u.fieldMap = make(map[string]field.Expr, 17)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["nickname"] = u.Nickname
 	u.fieldMap["account"] = u.Account
@@ -135,6 +138,7 @@ func (u *user) fillFieldMap() {
 	u.fieldMap["user_agent"] = u.UserAgent
 	u.fieldMap["create_time"] = u.CreateTime
 	u.fieldMap["update_time"] = u.UpdateTime
+	u.fieldMap["is_delete"] = u.IsDelete
 }
 
 func (u user) clone(db *gorm.DB) user {

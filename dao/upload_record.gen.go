@@ -41,6 +41,7 @@ func newUploadRecord(db *gorm.DB, opts ...gen.DOOption) uploadRecord {
 	_uploadRecord.Status = field.NewInt32(tableName, "status")
 	_uploadRecord.CreateTime = field.NewTime(tableName, "create_time")
 	_uploadRecord.UpdateTime = field.NewTime(tableName, "update_time")
+	_uploadRecord.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_uploadRecord.fillFieldMap()
 
@@ -64,6 +65,7 @@ type uploadRecord struct {
 	Status       field.Int32
 	CreateTime   field.Time
 	UpdateTime   field.Time
+	IsDelete     field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -93,6 +95,7 @@ func (u *uploadRecord) updateTableName(table string) *uploadRecord {
 	u.Status = field.NewInt32(table, "status")
 	u.CreateTime = field.NewTime(table, "create_time")
 	u.UpdateTime = field.NewTime(table, "update_time")
+	u.IsDelete = field.NewInt32(table, "is_delete")
 
 	u.fillFieldMap()
 
@@ -109,7 +112,7 @@ func (u *uploadRecord) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (u *uploadRecord) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 13)
+	u.fieldMap = make(map[string]field.Expr, 14)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["user_id"] = u.UserID
 	u.fieldMap["mimetype"] = u.Mimetype
@@ -123,6 +126,7 @@ func (u *uploadRecord) fillFieldMap() {
 	u.fieldMap["status"] = u.Status
 	u.fieldMap["create_time"] = u.CreateTime
 	u.fieldMap["update_time"] = u.UpdateTime
+	u.fieldMap["is_delete"] = u.IsDelete
 }
 
 func (u uploadRecord) clone(db *gorm.DB) uploadRecord {

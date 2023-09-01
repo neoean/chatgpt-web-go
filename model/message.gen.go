@@ -27,6 +27,7 @@ type Message struct {
 	PluginID         int64     `gorm:"column:plugin_id;not null" json:"plugin_id"`
 	CreateTime       time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime       time.Time `gorm:"column:update_time;not null;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete         int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName Message's table name

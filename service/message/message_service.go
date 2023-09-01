@@ -76,6 +76,18 @@ func MessageList(ctx context.Context, uid int64) (result []*Message, err error) 
 	return
 }
 
+func AdminMessageList(ctx context.Context) (result []*model.Message, err error) {
+	dm := dao.Q.Message
+
+	result, err = dm.WithContext(ctx).Where(dm.IsDelete.Eq(0)).Find()
+	if err != nil {
+		logs.Error("admin message find error: %v", err)
+		return
+	}
+
+	return
+}
+
 func MessageAdd(ctx context.Context, uid int64, r *gpt.Request, msgList []*ChatProcessResponse) {
 	if len(msgList) == 0 {
 		return

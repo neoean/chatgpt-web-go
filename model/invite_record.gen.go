@@ -24,6 +24,7 @@ type InviteRecord struct {
 	UserAgent  string    `gorm:"column:user_agent;comment:ua" json:"user_agent"` // ua
 	CreateTime time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime time.Time `gorm:"column:update_time;not null;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete   int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName InviteRecord's table name

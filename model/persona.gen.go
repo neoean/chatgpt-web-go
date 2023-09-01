@@ -22,6 +22,7 @@ type Persona struct {
 	System      int32     `gorm:"column:system;not null;comment:系统级别的角色" json:"system"`       // 系统级别的角色
 	CreateTime  time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime  time.Time `gorm:"column:update_time;not null;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete    int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName Persona's table name

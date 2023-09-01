@@ -19,6 +19,7 @@ type Notification struct {
 	Status     int32     `gorm:"column:status;not null;comment:状态" json:"status"` // 状态
 	CreateTime time.Time `gorm:"column:create_time;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime time.Time `gorm:"column:update_time;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete   int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName Notification's table name

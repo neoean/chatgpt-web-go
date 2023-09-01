@@ -20,6 +20,7 @@ type Dialog struct {
 	Status     int32     `gorm:"column:status;not null" json:"status"`
 	CreateTime time.Time `gorm:"column:create_time;not null;default:CURRENT_TIMESTAMP" json:"create_time"`
 	UpdateTime time.Time `gorm:"column:update_time;not null;default:CURRENT_TIMESTAMP" json:"update_time"`
+	IsDelete   int32     `gorm:"column:is_delete;not null" json:"is_delete"`
 }
 
 // TableName Dialog's table name

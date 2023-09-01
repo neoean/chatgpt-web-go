@@ -36,6 +36,7 @@ func newReward(db *gorm.DB, opts ...gen.DOOption) reward {
 	_reward.Status = field.NewInt32(tableName, "status")
 	_reward.CreateTime = field.NewTime(tableName, "create_time")
 	_reward.UpdateTime = field.NewTime(tableName, "update_time")
+	_reward.IsDelete = field.NewInt32(tableName, "is_delete")
 
 	_reward.fillFieldMap()
 
@@ -54,6 +55,7 @@ type reward struct {
 	Status     field.Int32  // 1有效
 	CreateTime field.Time
 	UpdateTime field.Time
+	IsDelete   field.Int32
 
 	fieldMap map[string]field.Expr
 }
@@ -78,6 +80,7 @@ func (r *reward) updateTableName(table string) *reward {
 	r.Status = field.NewInt32(table, "status")
 	r.CreateTime = field.NewTime(table, "create_time")
 	r.UpdateTime = field.NewTime(table, "update_time")
+	r.IsDelete = field.NewInt32(table, "is_delete")
 
 	r.fillFieldMap()
 
@@ -94,7 +97,7 @@ func (r *reward) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (r *reward) fillFieldMap() {
-	r.fieldMap = make(map[string]field.Expr, 8)
+	r.fieldMap = make(map[string]field.Expr, 9)
 	r.fieldMap["id"] = r.ID
 	r.fieldMap["category"] = r.Category
 	r.fieldMap["value"] = r.Value
@@ -103,6 +106,7 @@ func (r *reward) fillFieldMap() {
 	r.fieldMap["status"] = r.Status
 	r.fieldMap["create_time"] = r.CreateTime
 	r.fieldMap["update_time"] = r.UpdateTime
+	r.fieldMap["is_delete"] = r.IsDelete
 }
 
 func (r reward) clone(db *gorm.DB) reward {
