@@ -4,5 +4,6 @@ type CarmiGenRequest struct {
 	Type     string `json:"type"`
 	EndTime  string `json:"end_time"`
 	Quantity int    `json:"quantity"`
-	Reward   int    `json:"reward"`
+	Reward   int32  `json:"reward"`
+	Level    int32  `json:"level"`
 }

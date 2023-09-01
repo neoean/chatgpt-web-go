@@ -36,7 +36,7 @@ DROP TABLE IF EXISTS `aikey`;
 CREATE TABLE `aikey` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   `key` varchar(255) NOT NULL DEFAULT '',
-  `host` varchar(16) NOT NULL DEFAULT '',
+  `host` varchar(64) NOT NULL DEFAULT '',
   `remarks` varchar(255) NOT NULL DEFAULT '',
   `type` varchar(12) NOT NULL DEFAULT '' COMMENT 'openai sd',
   `models` varchar(16) NOT NULL DEFAULT '' COMMENT '可用模型',
@@ -281,7 +281,7 @@ CREATE TABLE `invite_record` (
   `superior_id` bigint(11) NOT NULL DEFAULT '0' COMMENT '上级ID（一旦确定将不可修改）',
   `reward` varchar(11) NOT NULL DEFAULT '' COMMENT '奖励',
   `reward_type` varchar(8) NOT NULL DEFAULT '' COMMENT '奖励类型',
-  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1正常',
+  `status` tinyint(4) NOT NULL DEFAULT '3' COMMENT '0-异常｜1-正常发放｜3-审核中',
   `remarks` varchar(255) NOT NULL DEFAULT '' COMMENT '评论',
   `ip` varchar(15) NOT NULL DEFAULT '',
   `user_agent` text COMMENT 'ua',

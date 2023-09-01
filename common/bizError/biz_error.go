@@ -19,7 +19,11 @@ func NewBizError(code int, message string) *BizError {
 }
 
 var (
-	UnknowError            = NewBizError(-1, "未知错误！")
+	UnknowError = NewBizError(-1, "未知错误！")
+
+	CommonUpdateError = NewBizError(-100, "更新异常！")
+	CommonDeleteError = NewBizError(-200, "删除异常！")
+
 	LoginCodeNoneError     = NewBizError(100000, "验证码不能为空！")
 	LoginPassCodeNoneError = NewBizError(100001, "密码或验证码不能为空！")
 	LoginCodeErrorError    = NewBizError(100002, "验证码错误！")
