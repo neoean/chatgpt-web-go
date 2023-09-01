@@ -1,11 +1,11 @@
-package notificationHandlers
+package dialogHandlers
 
 import (
 	"chatgpt-web-new-go/common/logs"
 	"chatgpt-web-new-go/common/types"
 	"chatgpt-web-new-go/model"
 	"chatgpt-web-new-go/router/base"
-	"chatgpt-web-new-go/service/notification"
+	"chatgpt-web-new-go/service/dialog"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,30 +17,30 @@ func List(c *gin.Context) {
 		return
 	}
 
-	notifications, count, err := notification.GetList(c, request.Page, request.PageSize)
+	list, count, err := dialog.List(c, request.Page, request.PageSize)
 	if err != nil {
-		logs.Error("notification list error: %v", err)
+		logs.Error("list error: %v", err)
 		base.Fail(c, "查询异常："+err.Error())
 		return
 	}
 
 	base.Success(c, base.PageResponse{
 		Count: count,
-		Rows:  notifications,
+		Rows:  list,
 	})
 }
 
 func Add(c *gin.Context) {
-	request := &model.Notification{}
+	request := &model.Dialog{}
 	if err := c.BindJSON(request); err != nil {
 		logs.Error("json bind error: %v", err)
 		base.Fail(c, "参数异常："+err.Error())
 		return
 	}
 
-	err := notification.Add(c, request)
+	err := dialog.Add(c, request)
 	if err != nil {
-		logs.Error("notification create error: %v", err)
+		logs.Error("dialog create error: %v", err)
 		base.Fail(c, "创建失败："+err.Error())
 		return
 	}
@@ -49,16 +49,16 @@ func Add(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	request := &model.Notification{}
+	request := &model.Dialog{}
 	if err := c.BindJSON(request); err != nil {
 		logs.Error("json bind error: %v", err)
 		base.Fail(c, "参数异常："+err.Error())
 		return
 	}
 
-	err := notification.Update(c, request)
+	err := dialog.Update(c, request)
 	if err != nil {
-		logs.Error("notification update error: %v", err)
+		logs.Error("dialog update error: %v", err)
 		base.Fail(c, "更新失败："+err.Error())
 		return
 	}
@@ -75,9 +75,9 @@ func Delete(c *gin.Context) {
 	}
 
 	id := types.StringToInt64(idStr)
-	err := notification.Delete(c, id)
+	err := dialog.Delete(c, id)
 	if err != nil {
-		logs.Error("notification delete error: %v", err)
+		logs.Error("dialog delete error: %v", err)
 		base.Fail(c, "删除失败！"+err.Error())
 		return
 	}

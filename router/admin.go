@@ -1,19 +1,23 @@
 package router
 
 import (
+	"chatgpt-web-new-go/router/admin/amountHandlers"
 	"chatgpt-web-new-go/router/admin/carmiHandlers"
 	"chatgpt-web-new-go/router/admin/cashbackHandlers"
 	"chatgpt-web-new-go/router/admin/configHandlers"
+	"chatgpt-web-new-go/router/admin/dialogHandlers"
 	"chatgpt-web-new-go/router/admin/inviteHandlers"
 	"chatgpt-web-new-go/router/admin/messageHandlers"
 	"chatgpt-web-new-go/router/admin/notificationHandlers"
 	"chatgpt-web-new-go/router/admin/orderHandlers"
 	"chatgpt-web-new-go/router/admin/payHandlers"
+	"chatgpt-web-new-go/router/admin/personaHandlers"
 	"chatgpt-web-new-go/router/admin/productHandlers"
 	"chatgpt-web-new-go/router/admin/signinHandlers"
 	"chatgpt-web-new-go/router/admin/tokenHandlers"
 	"chatgpt-web-new-go/router/admin/turnoverHandlers"
 	"chatgpt-web-new-go/router/admin/userHandlers"
+	"chatgpt-web-new-go/router/admin/withdrawalHandlers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -57,6 +61,44 @@ func adminGroup(group *gin.RouterGroup) {
 
 	// cashback
 	adminCashbackGroup(group.Group("/cashback"))
+
+	// withdrawal_record
+	adminWithdrawalGroup(group.Group("/withdrawal_record"))
+
+	// amount_details
+	adminAmountGroup(group.Group("/amount_details"))
+
+	// dialog
+	adminDialogGroup(group.Group("/dialog"))
+
+	// persona
+	adminPersonaGroup(group.Group("/persona"))
+}
+
+func adminPersonaGroup(group *gin.RouterGroup) {
+	group.GET("", personaHandlers.List)
+	group.PUT("", personaHandlers.Update)
+	group.POST("", personaHandlers.Add)
+	group.DELETE("/:id", personaHandlers.Delete)
+}
+
+func adminDialogGroup(group *gin.RouterGroup) {
+	group.GET("", dialogHandlers.List)
+	group.PUT("", dialogHandlers.Update)
+	group.POST("", dialogHandlers.Add)
+	group.DELETE("/:id", dialogHandlers.Delete)
+}
+
+func adminAmountGroup(group *gin.RouterGroup) {
+	group.GET("", amountHandlers.List)
+	group.PUT("", amountHandlers.Update)
+	group.DELETE("/:id", amountHandlers.Delete)
+}
+
+func adminWithdrawalGroup(group *gin.RouterGroup) {
+	group.GET("", withdrawalHandlers.List)
+	group.PUT("", withdrawalHandlers.Update)
+	group.DELETE("/:id", withdrawalHandlers.Delete)
 }
 
 func adminCashbackGroup(group *gin.RouterGroup) {
