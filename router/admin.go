@@ -36,7 +36,7 @@ func adminGroup(group *gin.RouterGroup) {
 	adminTurnoverGroup(group.Group("/turnover"))
 
 	// token
-	adminTokenGroup(group.Group("/token"))
+	adminTokenGroup(group.Group("/aikey"))
 
 	// config
 	adminConfigGroup(group.Group("/config"))
