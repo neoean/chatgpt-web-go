@@ -69,21 +69,23 @@ func doRegister(ctx *gin.Context, account, password, code, inviteCode string) (*
 		return nil, "", bizError.LoginCodeErrorError
 	}
 
-	// 1. get super id
+	// 1. user model
+	u := &model.User{
+		Account:   account,
+		Password:  password,
+		IP:        auth.GetClientIP(ctx),
+		UserAgent: auth.GetUA(ctx),
+	}
+
+	// 2. get super id
 	du := dao.Q.User
 	su, err := du.WithContext(ctx).Where(du.InviteCode.Eq(inviteCode)).First()
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		logs.Error("user get by inviteCode error: %v", err)
 		return nil, "", err
 	}
-
-	// 2. user model
-	u := &model.User{
-		Account:    account,
-		Password:   password,
-		IP:         auth.GetClientIP(ctx),
-		SuperiorID: su.ID,
-		UserAgent:  auth.GetUA(ctx),
+	if su != nil {
+		u.SuperiorID = su.ID
 	}
 
 	err = du.WithContext(ctx).Create(u)

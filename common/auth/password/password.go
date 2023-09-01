@@ -2,7 +2,6 @@ package password
 
 import (
 	"chatgpt-web-new-go/common/logs"
-	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -19,7 +18,6 @@ func Hash(password string) string {
 //CheckHash 检查密码和hash是否匹配
 func CheckHash(password string, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	fmt.Println(err)
 	return err == nil
 }
 
