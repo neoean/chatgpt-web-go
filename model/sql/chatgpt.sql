@@ -572,7 +572,7 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` (`id`, `nickname`, `account`, `password`, `avatar`, `role`, `integral`, `vip_expire_time`, `svip_expire_time`, `status`, `ip`, `create_time`, `update_time`, `invite_code`, `superior_id`, `user_agent`) VALUES (63366622672326656, 'Chat用户', 'admin@c.om', '0192023a7bbd73250516f069df18b500', 'https://u1.dl0.cn/icon/1682426702646avatarf3db669b024fad66-1930929abe2847093.png', 'administrator', 772771, '2023-06-25 00:00:00', '2023-03-23 00:00:00', 1, '127.0.0.1', '2023-06-24 20:36:20', '2023-07-21 00:55:01', '30e9bcbb', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
+INSERT INTO `user` (`id`, `nickname`, `account`, `password`, `avatar`, `role`, `integral`, `vip_expire_time`, `svip_expire_time`, `status`, `ip`, `create_time`, `update_time`, `invite_code`, `superior_id`, `user_agent`) VALUES (63366622672326656, 'Chat用户', 'admin@c.om', '$2a$14$q9rNu31Gus5eQMgkCIwYWORSAry2jlR.0uYGC5XjlqYUlNyMU2n.W', 'https://u1.dl0.cn/icon/1682426702646avatarf3db669b024fad66-1930929abe2847093.png', 'administrator', 772771, '2023-06-25 00:00:00', '2023-03-23 00:00:00', 1, '127.0.0.1', '2023-06-24 20:36:20', '2023-07-21 00:55:01', '30e9bcbb', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
 COMMIT;
 
 -- ----------------------------
