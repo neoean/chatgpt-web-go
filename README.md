@@ -4,38 +4,24 @@
 <h1 align="center">ChatGPT Web Go</h1>
 
 A commercially-viable ChatGpt web application built with Go.
-The corresponding front-end service is: [79E/ChatGPT-Web](https://github.com/79E/ChatGPT-Web/)
 
 可部署商业化的 ChatGpt 网页应用。
-对应的前端服务：[79E/ChatGPT-Web](https://github.com/79E/ChatGPT-Web/) 
 
+💡 本项目是后端服务，前端对应的项目是：[79E/ChatGPT-Web](https://github.com/79E/ChatGPT-Web/)
 
 [Issues](https://github.com/heimeropen/chatgpt-web-go/issues)
 
 
 </div>
 
-## 交流&赞助
+## 交流群
 
 <a href='https://t.me/+DDQufJfXm9s2OTQx' target='_blank'>
 <img width='46%' style="border-radius: 12px;" src='https://www.helloimg.com/images/2023/06/20/otDPwM.png' />
 </a>
 
 
-## 🐶 演示
-### 页面链接
-TODO
-
-如需帮助请提交 [Issues](https://github.com/heimeropen/chatgpt-web-go/issues) 或赞赏时留下联系方式。
-
-### 页面截图
-
-![cover](https://files.catbox.moe/tp963e.png)
-![cover](https://files.catbox.moe/y5avbx.png)
-![cover](https://files.catbox.moe/k16jsz.png)
-![cover](https://files.catbox.moe/8o5oja.png)
-
-## 🤖 主要功能
+## 主要功能
 
 - 后台管理系统,可对用户,Token,商品,卡密等进行管理
 - 精心设计的 UI，响应式设计
@@ -45,48 +31,78 @@ TODO
 - 一键导出聊天记录，完整的 Markdown 支持
 - 支持自定义API地址（如：[openAI](https://api.openai.com) / [API2D](https://api2d.com/r/192767)）
 
-## 🎮 开始使用
+## 本地启动
+**0.环境要求准备**
+- golang1.18
+- mysql 5.7+
+- redis
+- goland
+
 **1.先 `Fork` 本项目，然后克隆到本地。**
 ```
+建议目录 ~/go/src/github.com/heimeropen/
 git clone https://github.com/heimeropen/chatgpt-web-go.git
 ```
 
-**2.安装依赖**
+**2.导入sql**
 ```
-# 倒入sql 
+# sql文件
 ./model/sql/chatgpt.sql
-
-# 编译&拉取依赖
-go build
 ```
 
-**3.运行**
+**3.配置文件**
+在 ./config 目录下新建文件 dev.yml 内容如下：
+（配置内容需要更具自己环境更改）
 ```
-# http server 
+port: 8899
+
+db:
+  type: mysql
+  host: 127.0.0.1:3306
+  user: root
+  password: 123456
+  name: chatgpt_web_go
+
+redis:
+  addr: 127.0.0.1:6379
+
+gpt:
+  apiKey: #YOUR KEY
+  botDesc: You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
+  model: gpt-3.5-turbo
+
+emailServer:
+  host: 
+  port: 
+  senderName: 
+  user: 
+  password: 
+```
+
+**4.运行**
+```
+用goland打开项目
+启动main函数：
 ./cmd/server/main.go
 ```
 
-**4.打包**
+**前端服务**
 ```
-golang 正常打包
+前端服务安装参考：
+https://github.com/79E/ChatGpt-Web/blob/master/README.md
+
+前端项目需要修改配置文件 .env.development, 指向本地服务端：
+VITE_APP_REQUEST_HOST=http://127.0.0.1:8899
 ```
 
-## ⛺️ 环境变量
-
-前端项目需要修改配置 
-#### `VITE_APP_REQUEST_HOST`
 
 
-## 🚧 开发
+### 页面截图
 
-> goland 
-
-
-## 💰 赞助方
-
-
-
-## 🧘 贡献者
+![cover](https://files.catbox.moe/tp963e.png)
+![cover](https://files.catbox.moe/y5avbx.png)
+![cover](https://files.catbox.moe/k16jsz.png)
+![cover](https://files.catbox.moe/8o5oja.png)
 
 
 ## 📋 开源协议

@@ -25,7 +25,7 @@ func Process(ctx *gin.Context, r *Request, uid int64) (stream *gogpt.ChatComplet
 		logs.Error("user integral update error: %v", err)
 		return
 	}
-	if updateInfo.RowsAffected <= 0 {
+	if updateInfo.RowsAffected < 1 {
 		logs.Error("user integral update error: updateInfo.RowsAffected <= 0")
 		err = bizError.IntegralNoneError
 		return
