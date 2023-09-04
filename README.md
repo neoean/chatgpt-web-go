@@ -22,7 +22,7 @@ A commercially-viable ChatGpt web application built with Go.
 
 
 ## 主要功能
-
+#### 包括但不限于：
 - 后台管理系统,可对用户,Token,商品,卡密等进行管理
 - 精心设计的 UI，响应式设计
 - 极快的首屏加载速度（~100kb）
@@ -30,6 +30,15 @@ A commercially-viable ChatGpt web application built with Go.
 - 海量的内置 prompt 列表，来自[中文](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)和[英文](https://github.com/f/awesome-chatgpt-prompts)
 - 一键导出聊天记录，完整的 Markdown 支持
 - 支持自定义API地址（如：[openAI](https://api.openai.com) / [API2D](https://api2d.com/r/192767)）
+
+
+#### TODO：
+- [ ] API key功能实现
+- [ ] 支付功能完善
+- [ ] 绘画功能
+- [ ] 思维盗图功能
+- [ ] server端渲染模式支持
+
 
 ## 本地启动
 **0.环境要求准备**

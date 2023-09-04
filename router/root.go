@@ -88,6 +88,7 @@ func payGroup(group *gin.RouterGroup) {
 }
 
 func imagesGroup(group *gin.RouterGroup) {
+	group.GET("", imagesHandlers.ImageList)
 	group.POST("/generations", imagesHandlers.ImagesGenerationsHandler)
 }
 
