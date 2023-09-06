@@ -17,7 +17,7 @@ A commercially-viable ChatGpt web application built with Go.
 ## 交流群
 
 <a href='https://t.me/+DDQufJfXm9s2OTQx' target='_blank'>
-<img width='46%' style="border-radius: 12px;" src='https://www.helloimg.com/images/2023/06/20/otDPwM.png' />
+<img width='46%' style="border-radius: 12px;" src='https://www.helloimg.com/images/2023/06/20/otDPwM.png'  alt="chatgpt-web-go"/>
 </a>
 
 
@@ -33,11 +33,13 @@ A commercially-viable ChatGpt web application built with Go.
 
 
 #### TODO：
-- [ ] API key功能实现
+- [ ] API Key 功能实现
+- [ ] API Proxy 代理
 - [ ] 支付功能完善
 - [ ] 绘画功能
 - [ ] 思维盗图功能
 - [ ] server端渲染模式支持
+- [ ] Docker 支持 
 
 
 ## 本地启动
@@ -79,6 +81,7 @@ gpt:
   apiKey: #YOUR KEY
   botDesc: You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
   model: gpt-3.5-turbo
+  proxy: # 代理支持 socks5h://x.x.x.x 或者 http:x.x.x.x
 
 emailServer:
   host: 
