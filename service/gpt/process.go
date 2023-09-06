@@ -2,8 +2,8 @@ package gpt
 
 import (
 	"chatgpt-web-new-go/common/bizError"
-	"chatgpt-web-new-go/common/config"
 	"chatgpt-web-new-go/common/goUtil"
+	"chatgpt-web-new-go/common/gpt"
 	"chatgpt-web-new-go/common/logs"
 	"chatgpt-web-new-go/common/types"
 	"chatgpt-web-new-go/dao"
@@ -47,7 +47,7 @@ func Process(ctx *gin.Context, r *Request, uid int64) (stream *gogpt.ChatComplet
 	}
 
 	// cnf.Model 是否在 chatModels 中
-	stream, err = config.Gpt.CreateChatCompletionStream(ctx, request)
+	stream, err = gpt.Client().CreateChatCompletionStream(ctx, request)
 	if err != nil {
 		logs.Error("gpt client.CreateChatCompletion bizError:%v", err)
 		return nil, err

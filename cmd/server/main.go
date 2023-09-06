@@ -28,11 +28,11 @@ func main() {
 	// email service
 	email.InitEmailDialer()
 
-	// gin init
-	engine := gin.Default()
-
 	// gpt init
 	gpt.Init()
+
+	// gin init
+	engine := gin.Default()
 
 	// route init
 	router.Init(engine)
@@ -41,7 +41,7 @@ func main() {
 	port := fmt.Sprintf("%v", config.Config.Port)
 	err := engine.Run("127.0.0.1:" + port)
 	if err != nil {
-		logs.Debug("run webserver bizError %s", err)
+		logs.Error("run webserver error %v", err)
 		panic(err)
 	}
 }

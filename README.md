@@ -9,7 +9,8 @@ A commercially-viable ChatGpt web application built with Go.
 
 💡 本项目是后端服务，前端对应的项目是：[79E/ChatGPT-Web](https://github.com/79E/ChatGPT-Web/)
 
-[Issues](https://github.com/heimeropen/chatgpt-web-go/issues)
+
+[提交问题 Issues](https://github.com/heimeropen/chatgpt-web-go/issues)
 
 
 </div>

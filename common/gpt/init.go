@@ -2,7 +2,10 @@ package gpt
 
 import (
 	"chatgpt-web-new-go/common/config"
+	"chatgpt-web-new-go/common/logs"
+	"chatgpt-web-new-go/dao"
 	"context"
+	"github.com/robfig/cron/v3"
 	gogpt "github.com/sashabaranov/go-openai"
 	"golang.org/x/net/proxy"
 	"net"
@@ -13,22 +16,66 @@ import (
 )
 
 func Init() {
-	cnf := config.Config.Gpt
-	gptConfig := gogpt.DefaultConfig(cnf.ApiKey)
 
-	if cnf.Proxy != "" {
+	// init first
+	doInitClient()
+
+	// cron job
+	c := cron.New()
+	_, err := c.AddFunc("30 * * * *", doInitClient)
+	if err != nil {
+		logs.Error("cron add func error: %v", err)
+		panic(err)
+	}
+	c.Start()
+}
+
+func doInitClient() {
+	logs.Debug("doInitClient start len: %v", len(config.Gpt))
+
+	dk := dao.Q.Aikey
+	aiKeys, err := dk.Where(dk.IsDelete.Eq(0), dk.Status.Eq(1)).Find()
+	if err != nil {
+		logs.Error("ai keys get error: %v", err)
+		panic(err)
+	}
+
+	cnf := config.Config.Gpt
+
+	var clientList []*gogpt.Client
+	for _, ak := range aiKeys {
+		gptConfig := gogpt.DefaultConfig(ak.Key)
+
+		// proxy
+		addProxy(cnf.Proxy, gptConfig)
+
+		// 自定义gptConfig.BaseURL
+		if ak.Host != "" {
+			gptConfig.BaseURL = ak.Host
+		}
+
+		clientList = append(clientList, gogpt.NewClientWithConfig(gptConfig))
+	}
+
+	config.Gpt = clientList
+
+	logs.Debug("doInitClient start len: %v", len(config.Gpt))
+}
+
+func addProxy(proxy string, gptConfig gogpt.ClientConfig) {
+	if proxy != "" {
 		transport := &http.Transport{}
 
-		if strings.HasPrefix(cnf.Proxy, "socks5h://") {
+		if strings.HasPrefix(proxy, "socks5h://") {
 			// 创建一个 DialContext 对象，并设置代理服务器
-			dialContext, err := newDialContext(cnf.Proxy[10:])
+			dialContext, err := newDialContext(proxy[10:])
 			if err != nil {
 				panic(err)
 			}
 			transport.DialContext = dialContext
 		} else {
 			// 创建一个 HTTP Transport 对象，并设置代理服务器
-			proxyUrl, err := url.Parse(cnf.Proxy)
+			proxyUrl, err := url.Parse(proxy)
 			if err != nil {
 				panic(err)
 			}
@@ -39,13 +86,6 @@ func Init() {
 			Transport: transport,
 		}
 	}
-
-	// 自定义gptConfig.BaseURL
-	if cnf.ApiURL != "" {
-		gptConfig.BaseURL = cnf.ApiURL
-	}
-
-	config.Gpt = gogpt.NewClientWithConfig(gptConfig)
 }
 
 type dialContextFunc func(ctx context.Context, network, address string) (net.Conn, error)

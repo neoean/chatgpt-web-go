@@ -39,7 +39,7 @@ CREATE TABLE `aikey` (
   `host` varchar(64) NOT NULL DEFAULT '',
   `remarks` varchar(255) NOT NULL DEFAULT '',
   `type` varchar(12) NOT NULL DEFAULT '' COMMENT 'openai sd',
-  `models` varchar(16) NOT NULL DEFAULT '' COMMENT '可用模型',
+  `models` varchar(512) NOT NULL DEFAULT '' COMMENT '可用模型',
   `check` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1 检查token可用性 0不检查',
   `limit` double NOT NULL DEFAULT '0' COMMENT '总限制',
   `usage` double NOT NULL DEFAULT '0' COMMENT '已经使用',

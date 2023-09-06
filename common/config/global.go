@@ -12,7 +12,7 @@ var (
 	Config      *Configuration
 	DB          *gorm.DB // DB instance
 	Redis       *redis.Client
-	Gpt         *gogpt.Client
+	Gpt         []*gogpt.Client
 	Gcron       *cron.Cron // cron
 	EmailDialer *gomail.Dialer
 )
