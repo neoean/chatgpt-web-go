@@ -40,19 +40,20 @@ func doInitClient() {
 		panic(err)
 	}
 
-	cnf := config.Config.Gpt
-
 	var clientList []*gogpt.Client
 	for _, ak := range aiKeys {
 		gptConfig := gogpt.DefaultConfig(ak.Key)
 
 		// proxy
-		addProxy(cnf.Proxy, gptConfig)
+		cnf := config.Config.Gpt
+		if cnf != nil {
+			addProxy(cnf.Proxy, gptConfig)
+		}
 
 		// 自定义gptConfig.BaseURL
-		if ak.Host != "" {
-			gptConfig.BaseURL = ak.Host
-		}
+		//if ak.Host != "" {
+		//	gptConfig.BaseURL = ak.Host
+		//}
 
 		clientList = append(clientList, gogpt.NewClientWithConfig(gptConfig))
 	}
@@ -63,28 +64,30 @@ func doInitClient() {
 }
 
 func addProxy(proxy string, gptConfig gogpt.ClientConfig) {
-	if proxy != "" {
-		transport := &http.Transport{}
+	if proxy == "" {
+		return
+	}
 
-		if strings.HasPrefix(proxy, "socks5h://") {
-			// 创建一个 DialContext 对象，并设置代理服务器
-			dialContext, err := newDialContext(proxy[10:])
-			if err != nil {
-				panic(err)
-			}
-			transport.DialContext = dialContext
-		} else {
-			// 创建一个 HTTP Transport 对象，并设置代理服务器
-			proxyUrl, err := url.Parse(proxy)
-			if err != nil {
-				panic(err)
-			}
-			transport.Proxy = http.ProxyURL(proxyUrl)
+	transport := &http.Transport{}
+
+	if strings.HasPrefix(proxy, "socks5h://") {
+		// 创建一个 DialContext 对象，并设置代理服务器
+		dialContext, err := newDialContext(proxy[10:])
+		if err != nil {
+			panic(err)
 		}
-		// 创建一个 HTTP 客户端，并将 Transport 对象设置为其 Transport 字段
-		gptConfig.HTTPClient = &http.Client{
-			Transport: transport,
+		transport.DialContext = dialContext
+	} else {
+		// 创建一个 HTTP Transport 对象，并设置代理服务器
+		proxyUrl, err := url.Parse(proxy)
+		if err != nil {
+			panic(err)
 		}
+		transport.Proxy = http.ProxyURL(proxyUrl)
+	}
+	// 创建一个 HTTP 客户端，并将 Transport 对象设置为其 Transport 字段
+	gptConfig.HTTPClient = &http.Client{
+		Transport: transport,
 	}
 }
 

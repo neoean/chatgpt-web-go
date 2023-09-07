@@ -34,11 +34,11 @@ A commercially-viable ChatGpt web application built with Go.
 
 
 #### TODO：
-- [ ] API Key 功能实现
-- [ ] API Proxy 代理
+- [x] API Key 功能实现
+- [x] API Proxy 代理
 - [ ] 支付功能完善
 - [ ] 绘画功能
-- [ ] 思维盗图功能
+- [ ] 思维导图功能
 - [ ] server端渲染模式支持
 - [ ] Docker 支持 
 
@@ -79,9 +79,6 @@ redis:
   addr: 127.0.0.1:6379
 
 gpt:
-  apiKey: #YOUR KEY
-  botDesc: You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
-  model: gpt-3.5-turbo
   proxy: # 代理支持 socks5h://x.x.x.x 或者 http:x.x.x.x
 
 emailServer:
