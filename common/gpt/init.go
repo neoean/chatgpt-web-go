@@ -18,11 +18,11 @@ import (
 func Init() {
 
 	// init first
-	doInitClient()
+	DoInitClient()
 
 	// cron job
 	c := cron.New()
-	_, err := c.AddFunc("30 * * * *", doInitClient)
+	_, err := c.AddFunc("30 * * * *", DoInitClient)
 	if err != nil {
 		logs.Error("cron add func error: %v", err)
 		panic(err)
@@ -30,8 +30,8 @@ func Init() {
 	c.Start()
 }
 
-func doInitClient() {
-	logs.Debug("doInitClient start len: %v", len(config.Gpt))
+func DoInitClient() {
+	logs.Debug("doInitClient start len: %v", len(Clients))
 
 	dk := dao.Q.Aikey
 	aiKeys, err := dk.Where(dk.IsDelete.Eq(0), dk.Status.Eq(1)).Find()
@@ -40,8 +40,10 @@ func doInitClient() {
 		panic(err)
 	}
 
-	var clientList []*gogpt.Client
+	var clientList []*GptClient
 	for _, ak := range aiKeys {
+		ak := ak
+
 		gptConfig := gogpt.DefaultConfig(ak.Key)
 
 		// proxy
@@ -50,17 +52,18 @@ func doInitClient() {
 			addProxy(cnf.Proxy, gptConfig)
 		}
 
-		// 自定义gptConfig.BaseURL
-		//if ak.Host != "" {
-		//	gptConfig.BaseURL = ak.Host
-		//}
+		newClient := gogpt.NewClientWithConfig(gptConfig)
 
-		clientList = append(clientList, gogpt.NewClientWithConfig(gptConfig))
+		gptClient := &GptClient{
+			GoGptClient: newClient,
+			Model:       ak,
+		}
+		clientList = append(clientList, gptClient)
 	}
 
-	config.Gpt = clientList
+	Clients = clientList
 
-	logs.Debug("doInitClient start len: %v", len(config.Gpt))
+	logs.Debug("doInitClient start len: %v", len(Clients))
 }
 
 func addProxy(proxy string, gptConfig gogpt.ClientConfig) {

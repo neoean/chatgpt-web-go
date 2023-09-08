@@ -47,9 +47,18 @@ func Process(ctx *gin.Context, r *Request, uid int64) (stream *gogpt.ChatComplet
 	}
 
 	// cnf.Model 是否在 chatModels 中
-	stream, err = gpt.Client().CreateChatCompletionStream(ctx, request)
+	gptClient := gpt.GetClient()
+	if gptClient == nil {
+		logs.Error("gptClient is nil!")
+		return nil, bizError.AiKeyNoneUsefullError
+	}
+
+	stream, err = gptClient.GoGptClient.CreateChatCompletionStream(ctx, request)
 	if err != nil {
 		logs.Error("gpt client.CreateChatCompletion bizError:%v", err)
+		goUtil.New(func() {
+			refreshKey(gptClient)
+		})
 		return nil, err
 	}
 
@@ -64,6 +73,26 @@ func Process(ctx *gin.Context, r *Request, uid int64) (stream *gogpt.ChatComplet
 	})
 
 	return
+}
+
+func refreshKey(client *gpt.GptClient) {
+	aiKey := client.Model
+
+	aiKey.Status = 0
+
+	da := dao.Q.Aikey
+	resultInfo, err := da.Where(da.ID.Eq(aiKey.ID)).Update(da.Status, 0)
+	if err != nil {
+		logs.Error("aiKey update error: %v", err)
+		return
+	}
+	if resultInfo.RowsAffected < 1 {
+		logs.Error("aiKey update fail: RowsAffected < 1")
+		return
+	}
+
+	// refresh
+	gpt.DoInitClient()
 }
 
 func insertTurnOverRecord(ctx *gin.Context, r *Request, uid int64) {

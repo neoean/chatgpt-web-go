@@ -2,6 +2,8 @@ package token
 
 import (
 	"chatgpt-web-new-go/common/bizError"
+	"chatgpt-web-new-go/common/goUtil"
+	"chatgpt-web-new-go/common/gpt"
 	"chatgpt-web-new-go/common/logs"
 	"chatgpt-web-new-go/dao"
 	"chatgpt-web-new-go/model"
@@ -26,6 +28,11 @@ func TokenAdd(ctx context.Context, token *model.Aikey) (result *model.Aikey, err
 		logs.Error("token create error: %v", err)
 		return nil, err
 	}
+
+	goUtil.New(func() {
+		gpt.DoInitClient()
+	})
+
 	return
 }
 
@@ -41,6 +48,11 @@ func TokenUpdate(ctx context.Context, token *model.Aikey) (result *model.Aikey, 
 		logs.Error("token update fail: RowsAffected < 1")
 		return nil, bizError.AiKeyTokenUpdateError
 	}
+
+	goUtil.New(func() {
+		gpt.DoInitClient()
+	})
+
 	return
 }
 
@@ -56,5 +68,10 @@ func TokenDelete(ctx context.Context, id int64) error {
 		logs.Error("token delete fail: RowsAffected < 1")
 		return bizError.AiKeyTokenDeleteError
 	}
+
+	goUtil.New(func() {
+		gpt.DoInitClient()
+	})
+
 	return nil
 }

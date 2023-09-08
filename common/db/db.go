@@ -9,6 +9,9 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"log"
+	"os"
 	"time"
 )
 
@@ -33,14 +36,25 @@ func initMysql() {
 		dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Name)
 
 	var err error
-	config.DB, err = gorm.Open(mysql.New(mysql.Config{
-		DSN:                       dsn,   // data source name
-		DefaultStringSize:         256,   // default size for string fields
-		DisableDatetimePrecision:  true,  // disable datetime precision, which not supported before MySQL 5.6
-		DontSupportRenameIndex:    true,  // drop & create when rename messageDao, rename messageDao not supported before MySQL 5.7, MariaDB
-		DontSupportRenameColumn:   true,  // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-		SkipInitializeWithVersion: false, // autoconfigure based on currently MySQL version
-	}), &gorm.Config{})
+	config.DB, err = gorm.Open(
+		mysql.New(mysql.Config{
+			DSN:                       dsn,   // data source name
+			DefaultStringSize:         256,   // default size for string fields
+			DisableDatetimePrecision:  true,  // disable datetime precision, which not supported before MySQL 5.6
+			DontSupportRenameIndex:    true,  // drop & create when rename messageDao, rename messageDao not supported before MySQL 5.7, MariaDB
+			DontSupportRenameColumn:   true,  // `change` when rename column, rename column not supported before MySQL 8, MariaDB
+			SkipInitializeWithVersion: false, // autoconfigure based on currently MySQL version
+		}),
+		&gorm.Config{
+			Logger: logger.New(
+				log.New(os.Stdout, "\r\n", log.LstdFlags),
+				logger.Config{
+					SlowThreshold: time.Second,
+					LogLevel:      logger.Info,
+					Colorful:      true,
+				},
+			),
+		})
 	if err != nil {
 		panic(err)
 	}

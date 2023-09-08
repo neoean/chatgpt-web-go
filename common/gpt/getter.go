@@ -1,15 +1,17 @@
 package gpt
 
 import (
-	"chatgpt-web-new-go/common/config"
-	gogpt "github.com/sashabaranov/go-openai"
 	"math/rand"
 )
 
-func Client() *gogpt.Client {
-	keyCount := len(config.Gpt)
+func GetClient() *GptClient {
+	if len(Clients) < 1 {
+		return nil
+	}
+
+	keyCount := len(Clients)
 
 	index := rand.Intn(keyCount)
 
-	return config.Gpt[index]
+	return Clients[index]
 }
