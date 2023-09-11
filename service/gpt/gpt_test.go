@@ -25,7 +25,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestListModels(t *testing.T) {
-	models, err := gpt.Client().ListModels(context.Background())
+	models, err := gpt.GetClient().GoGptClient.ListModels(context.Background())
 	fmt.Println(err)
 	fmt.Println(models)
 
