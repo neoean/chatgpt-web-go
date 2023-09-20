@@ -36,9 +36,9 @@ A commercially-viable ChatGpt web application built with Go.
 #### TODO：
 - [x] API Key 功能实现
 - [x] API Proxy 代理
-- [ ] 支付功能完善
 - [ ] 绘画功能
 - [ ] 思维导图功能
+- [ ] 支付功能完善
 - [ ] server端渲染模式支持
 - [ ] Docker 支持 
 
