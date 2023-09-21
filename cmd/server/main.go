@@ -1,10 +1,10 @@
 package main
 
 import (
+	"chatgpt-web-new-go/common/aiClient"
 	"chatgpt-web-new-go/common/config"
 	"chatgpt-web-new-go/common/db"
 	"chatgpt-web-new-go/common/email"
-	"chatgpt-web-new-go/common/gpt"
 	"chatgpt-web-new-go/common/logs"
 	"chatgpt-web-new-go/common/redis"
 	"chatgpt-web-new-go/router"
@@ -28,8 +28,8 @@ func main() {
 	// email service
 	email.InitEmailDialer()
 
-	// gpt init
-	gpt.Init()
+	// aiClient init
+	aiClient.Init()
 
 	// gin init
 	engine := gin.Default()

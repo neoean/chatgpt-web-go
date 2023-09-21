@@ -1,9 +1,9 @@
 package gpt
 
 import (
+	"chatgpt-web-new-go/common/aiClient"
 	"chatgpt-web-new-go/common/bizError"
 	"chatgpt-web-new-go/common/goUtil"
-	"chatgpt-web-new-go/common/gpt"
 	"chatgpt-web-new-go/common/logs"
 	"chatgpt-web-new-go/common/types"
 	"chatgpt-web-new-go/dao"
@@ -47,15 +47,15 @@ func Process(ctx *gin.Context, r *Request, uid int64) (stream *gogpt.ChatComplet
 	}
 
 	// cnf.Model 是否在 chatModels 中
-	gptClient := gpt.GetClient()
+	gptClient := aiClient.GetGptClient()
 	if gptClient == nil {
 		logs.Error("gptClient is nil!")
 		return nil, bizError.AiKeyNoneUsefullError
 	}
 
-	stream, err = gptClient.GoGptClient.CreateChatCompletionStream(ctx, request)
+	stream, err = gptClient.OpenAIClient.CreateChatCompletionStream(ctx, request)
 	if err != nil {
-		logs.Error("gpt client.CreateChatCompletion bizError:%v", err)
+		logs.Error("aiClient client.CreateChatCompletion bizError:%v", err)
 		goUtil.New(func() {
 			refreshKey(gptClient)
 		})
@@ -75,7 +75,7 @@ func Process(ctx *gin.Context, r *Request, uid int64) (stream *gogpt.ChatComplet
 	return
 }
 
-func refreshKey(client *gpt.GptClient) {
+func refreshKey(client *aiClient.GptClient) {
 	aiKey := client.Model
 
 	aiKey.Status = 0
@@ -92,7 +92,7 @@ func refreshKey(client *gpt.GptClient) {
 	}
 
 	// refresh
-	gpt.DoInitClient()
+	aiClient.DoInitClient()
 }
 
 func insertTurnOverRecord(ctx *gin.Context, r *Request, uid int64) {

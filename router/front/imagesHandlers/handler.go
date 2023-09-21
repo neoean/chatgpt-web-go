@@ -41,5 +41,29 @@ func ImageList(c *gin.Context) {
 }
 
 func ImagesGenerationsHandler(c *gin.Context) {
+	request := &draw.Request{}
 
+	if err := c.Bind(request); err != nil {
+		logs.Error("draw bind error: %v", err)
+		base.Fail(c, "参数异常"+err.Error())
+		return
+	}
+
+	uFromCtx, found := c.Get(authGlobal.GinCtxKey)
+	if !found {
+		logs.Error("cannot get auth user key:%v", authGlobal.GinCtxKey)
+		base.Fail(c, "cannot get auth user key:"+authGlobal.GinCtxKey)
+		return
+	}
+
+	u := uFromCtx.(*model.User)
+
+	response, err := draw.Process(c, request, u.ID)
+	if err != nil {
+		logs.Error("draw process error: %v", err)
+		base.Fail(c, "绘画服务异常："+err.Error())
+		return
+	}
+
+	base.Success(c, response)
 }

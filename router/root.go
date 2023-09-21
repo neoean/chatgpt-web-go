@@ -64,7 +64,7 @@ func Init(r *gin.Engine) {
 	// chat group
 	chatGroup(apiRoot.Group("/chat"))
 
-	// images group todo
+	// images group
 	imagesGroup(apiRoot.Group("/images"))
 
 	// promotion group
@@ -124,6 +124,7 @@ func userGroup(group *gin.RouterGroup) {
 
 func chatGroup(group *gin.RouterGroup) {
 	group.POST("/completions", chatHandlers.ChatCompletionsHandler)
+	group.POST("/completion", chatHandlers.ChatCompletionsHandler)
 }
 
 func promotionGroup(group *gin.RouterGroup) {

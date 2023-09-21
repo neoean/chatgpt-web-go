@@ -1,9 +1,9 @@
 package token
 
 import (
+	"chatgpt-web-new-go/common/aiClient"
 	"chatgpt-web-new-go/common/bizError"
 	"chatgpt-web-new-go/common/goUtil"
-	"chatgpt-web-new-go/common/gpt"
 	"chatgpt-web-new-go/common/logs"
 	"chatgpt-web-new-go/dao"
 	"chatgpt-web-new-go/model"
@@ -30,7 +30,7 @@ func TokenAdd(ctx context.Context, token *model.Aikey) (result *model.Aikey, err
 	}
 
 	goUtil.New(func() {
-		gpt.DoInitClient()
+		aiClient.DoInitClient()
 	})
 
 	return
@@ -50,7 +50,7 @@ func TokenUpdate(ctx context.Context, token *model.Aikey) (result *model.Aikey, 
 	}
 
 	goUtil.New(func() {
-		gpt.DoInitClient()
+		aiClient.DoInitClient()
 	})
 
 	return
@@ -70,7 +70,7 @@ func TokenDelete(ctx context.Context, id int64) error {
 	}
 
 	goUtil.New(func() {
-		gpt.DoInitClient()
+		aiClient.DoInitClient()
 	})
 
 	return nil

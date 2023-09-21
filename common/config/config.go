@@ -4,7 +4,7 @@ type Configuration struct {
 	Port        int                `json:"port"`
 	Db          *dbConfig          `json:"db"`
 	Redis       *redisConfig       `json:"redis"`
-	Gpt         *gptConfig         `json:"gpt"`
+	Gpt         *gptConfig         `json:"aiClient"`
 	EmailServer *emailServerConfig `json:"emailServer"`
 }
 

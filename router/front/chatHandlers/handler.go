@@ -45,7 +45,7 @@ func ChatCompletionsHandler(c *gin.Context) {
 
 	stream, err := gpt.Process(c, &request, u.ID)
 	if err != nil {
-		logs.Error("gpt Process bizError: %v", err)
+		logs.Error("aiClient Process bizError: %v", err)
 		base.Fail(c, "错误:"+err.Error())
 		return
 	}

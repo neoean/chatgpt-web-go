@@ -1,4 +1,4 @@
-package gpt
+package aiClient
 
 import (
 	"chatgpt-web-new-go/common/config"
@@ -31,7 +31,7 @@ func Init() {
 }
 
 func DoInitClient() {
-	logs.Debug("doInitClient start len: %v", len(Clients))
+	logs.Debug("doInitClient start len: %v", len(GptClients))
 
 	dk := dao.Q.Aikey
 	aiKeys, err := dk.Where(dk.IsDelete.Eq(0), dk.Status.Eq(1)).Find()
@@ -55,15 +55,15 @@ func DoInitClient() {
 		newClient := gogpt.NewClientWithConfig(gptConfig)
 
 		gptClient := &GptClient{
-			GoGptClient: newClient,
-			Model:       ak,
+			OpenAIClient: newClient,
+			Model:        ak,
 		}
 		clientList = append(clientList, gptClient)
 	}
 
-	Clients = clientList
+	GptClients = clientList
 
-	logs.Debug("doInitClient start len: %v", len(Clients))
+	logs.Debug("doInitClient start len: %v", len(GptClients))
 }
 
 func addProxy(proxy string, gptConfig gogpt.ClientConfig) {

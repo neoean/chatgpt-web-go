@@ -1,8 +1,8 @@
 package gpt
 
 import (
+	"chatgpt-web-new-go/common/aiClient"
 	"chatgpt-web-new-go/common/config"
-	"chatgpt-web-new-go/common/gpt"
 	"chatgpt-web-new-go/common/logs"
 	"context"
 	"fmt"
@@ -17,15 +17,15 @@ func TestMain(m *testing.M) {
 	// log init
 	logs.LogInit()
 
-	// gpt init
-	gpt.Init()
+	// aiClient init
+	aiClient.Init()
 
 	code := m.Run()
 	os.Exit(code)
 }
 
 func TestListModels(t *testing.T) {
-	models, err := gpt.GetClient().GoGptClient.ListModels(context.Background())
+	models, err := aiClient.GetGptClient().OpenAIClient.ListModels(context.Background())
 	fmt.Println(err)
 	fmt.Println(models)
 

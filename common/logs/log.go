@@ -28,7 +28,7 @@ func LogSyncLast() {
 }
 
 func LogInit() {
-	hook := getWriter("./log/gpt.log")
+	hook := getWriter("./log/aiClient.log")
 	encoderConfig := zapcore.EncoderConfig{
 		MessageKey:     "msg",
 		LevelKey:       "level",

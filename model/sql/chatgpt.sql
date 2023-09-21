@@ -1,5 +1,5 @@
 /*
- gpt sql ddl and some dml
+ aiClient sql ddl and some dml
 
  Target Server Type    : MySQL
  Target Server Version : 50740 (5.7.40-log)
@@ -154,27 +154,27 @@ INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, up
 INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (23, 'chat_models', '[
     {
         "app":"openai",
-        "label":"gpt-3.5-turbo-0613",
+        "label":"aiClient-3.5-turbo-0613",
         "type":"chat",
-        "value":"gpt-3.5-turbo-0613"
+        "value":"aiClient-3.5-turbo-0613"
     },
     {
         "app":"openai",
-        "label":"gpt-3.5-turbo-16k-0613",
+        "label":"aiClient-3.5-turbo-16k-0613",
         "type":"chat",
-        "value":"gpt-3.5-turbo-16k-0613"
+        "value":"aiClient-3.5-turbo-16k-0613"
     },
     {
         "app":"openai",
-        "label":"gpt-3.5-turbo-16k",
+        "label":"aiClient-3.5-turbo-16k",
         "type":"chat",
-        "value":"gpt-3.5-turbo-16k"
+        "value":"aiClient-3.5-turbo-16k"
     },
     {
         "app":"openai",
-        "label":"gpt-3.5-turbo",
+        "label":"aiClient-3.5-turbo",
         "type":"chat",
-        "value":"gpt-3.5-turbo"
+        "value":"aiClient-3.5-turbo"
     }
 ]', '', '2023-08-27 15:06:07', '2023-08-27 15:27:11');
 INSERT INTO chatgpt_web_new_go.config (id, name, value, remarks, create_time, update_time) VALUES (24, 'draw_models', '[
